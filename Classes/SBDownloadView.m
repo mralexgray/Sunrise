@@ -122,9 +122,8 @@
 	CGFloat availableWidth = self.bounds.size.width - titleHeight;
 	if ([title length] > 0)
 	{
-		NSSize size = [title sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-												 self.nameFont, NSFontAttributeName, 
-												 self.paragraphStyle, NSParagraphStyleAttributeName, nil]];
+		NSSize size = [title sizeWithAttributes:@{NSFontAttributeName: self.nameFont, 
+												 NSParagraphStyleAttributeName: self.paragraphStyle}];
 		if (size.width <= availableWidth)
 		{
 			drawRect.origin.x = (availableWidth - size.width) / 2;
@@ -343,10 +342,9 @@
 //			CGContextRestoreGState(ctx);
 //			CGPathRelease(path);
 		}
-		attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-					  self.nameFont, NSFontAttributeName, 
-					  [NSColor whiteColor], NSForegroundColorAttributeName, 
-					  self.paragraphStyle, NSParagraphStyleAttributeName, nil];
+		attributes = @{NSFontAttributeName: self.nameFont, 
+					  NSForegroundColorAttributeName: [NSColor whiteColor], 
+					  NSParagraphStyleAttributeName: self.paragraphStyle};
 		size = [download.name sizeWithAttributes:attributes];
 		r.origin.y += (r.size.height - size.height) / 2;
 		r.size.height = size.height;
@@ -374,10 +372,9 @@
 		r.size.width = rect.size.width;
 		r.size.height = bytesHeight;
 		r.origin.y = padding.y;
-		attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-					  [NSFont systemFontOfSize:9.0], NSFontAttributeName, 
-					  [NSColor lightGrayColor], NSForegroundColorAttributeName, 
-					  self.paragraphStyle, NSParagraphStyleAttributeName, nil];
+		attributes = @{NSFontAttributeName: [NSFont systemFontOfSize:9.0], 
+					  NSForegroundColorAttributeName: [NSColor lightGrayColor], 
+					  NSParagraphStyleAttributeName: self.paragraphStyle};
 		size = [description sizeWithAttributes:attributes];
 		r.origin.y += (r.size.height - size.height) / 2;
 		r.size.height = size.height;

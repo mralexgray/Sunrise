@@ -412,7 +412,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	BOOL r = NO;
 	NSString *string = [searchField stringValue];
 	NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSFindPboard];
-	[pasteboard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:self];
+	[pasteboard declareTypes:@[NSStringPboardType] owner:self];
 	[pasteboard setString:string forType:NSStringPboardType];
 	if (target)
 	{

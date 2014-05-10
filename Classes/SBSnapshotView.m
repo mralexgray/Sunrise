@@ -434,7 +434,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		int r = NSRunAlertPanel(aTitle, @"", NSLocalizedString(@"Continue", nil), NSLocalizedString(@"Cancel", nil), nil);
 		if (r == NSOKButton)
 		{
-			userInfo = [NSDictionary dictionaryWithObject:field forKey:@"Object"];
+			userInfo = @{@"Object": field};
 			updateTimer = [[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateWithTimer:) userInfo:userInfo repeats:NO] retain];
 		}
 		else {
@@ -453,7 +453,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		}
 	}
 	else {
-		userInfo = [NSDictionary dictionaryWithObject:field forKey:@"Object"];
+		userInfo = @{@"Object": field};
 		updateTimer = [[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateWithTimer:) userInfo:userInfo repeats:NO] retain];
 	}
 }
@@ -614,7 +614,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)updateWithTimer:(NSTimer *)timer
 {
 	NSDictionary *userInfo = [timer userInfo];
-	id field = (userInfo ? [userInfo objectForKey:@"Object"] : nil);
+	id field = (userInfo ? userInfo[@"Object"] : nil);
 	[self destructUpdateTimer];
 	[self updateForField:field];
 }
@@ -626,7 +626,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	// Perform update
 	if ([self respondsToSelector:@selector(updatingForField:)])
 	{
-		NSArray *modes = [NSArray arrayWithObjects:NSDefaultRunLoopMode, NSEventTrackingRunLoopMode, NSModalPanelRunLoopMode, nil];
+		NSArray *modes = @[NSDefaultRunLoopMode, NSEventTrackingRunLoopMode, NSModalPanelRunLoopMode];
 		[self performSelector:@selector(updatingForField:) withObject:field afterDelay:0 inModes:modes];
 	}
 }
@@ -861,7 +861,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		filetype = tag;
 		for (i = 0; i < count; i ++)
 		{
-			NSMenuItem *item = [items objectAtIndex:i];
+			NSMenuItem *item = items[i];
 			[item setState:(filetype == [item tag] ? NSOnState : NSOffState)];
 		}
 		// Update image
@@ -896,7 +896,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		tiffCompression = tag;
 		for (i = 0; i < count; i ++)
 		{
-			NSMenuItem *item = [items objectAtIndex:i];
+			NSMenuItem *item = items[i];
 			[item setState:(tiffCompression == [item tag] ? NSOnState : NSOffState)];
 		}
 		// Update image
@@ -1007,13 +1007,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	else if (inFiletype == NSGIFFileType)
 	{
 		bitmapImageRep = [NSBitmapImageRep imageRepWithData:aData];
-		properties = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSImageDitherTransparency, nil];
+		properties = @{NSImageDitherTransparency: @YES};
 		aData = [bitmapImageRep representationUsingType:NSGIFFileType properties:properties];
 	}
 	else if (inFiletype == NSJPEGFileType)
 	{
 		bitmapImageRep = [NSBitmapImageRep imageRepWithData:aData];
-		properties = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:jpgFactor] forKey:NSImageCompressionFactor];
+		properties = @{NSImageCompressionFactor: [NSNumber numberWithFloat:jpgFactor]};
 		aData = [bitmapImageRep representationUsingType:NSJPEGFileType properties:properties];
 	}
 	else if (inFiletype == NSPNGFileType)

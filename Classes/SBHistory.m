@@ -86,7 +86,7 @@ static SBHistory *sharedHistory = nil;
 {
 	WebHistoryItem *item = nil;
 	item = [[[WebHistoryItem alloc] initWithURLString:URLString title:title lastVisitedTimeInterval:[[NSDate date] timeIntervalSince1970]] autorelease];
-	[history addItems:[NSArray arrayWithObject:item]];
+	[history addItems:@[item]];
 	[self writeToFile];
 }
 

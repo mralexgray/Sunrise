@@ -303,7 +303,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	[menu addItemWithTitle:[NSString string] action:nil keyEquivalent:@""];
 	for (NSUInteger i = 0; i < [names count]; i++)
 	{
-		NSMenuItem *item = [[[NSMenuItem alloc] initWithTitle:[names objectAtIndex:i] action:@selector(selectApp:) keyEquivalent:@""] autorelease];
+		NSMenuItem *item = [[[NSMenuItem alloc] initWithTitle:names[i] action:@selector(selectApp:) keyEquivalent:@""] autorelease];
 		[item setTarget:self];
 		if (i < 2)
 			[item setImage:images[i]];
@@ -420,12 +420,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		NSString *urlString = nil;
 		urlString = @"mailto:";
-		urlString = [urlString stringByAppendingString:[addresses objectAtIndex:0]];
+		urlString = [urlString stringByAppendingString:addresses[0]];
 		if ([addresses count] > 1)
 		{
 			for (i = 0; i < count; i++)
 			{
-				NSString *address = [addresses objectAtIndex:i];
+				NSString *address = addresses[i];
 				urlString = [urlString stringByAppendingFormat:@", %@", address];
 			}
 		}
@@ -483,7 +483,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			processor = @"Unknown Processor";
 		}
 	}
-	applicationVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+	applicationVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
 	
 	// Make message
 	if ([summery length] > 0)
@@ -512,7 +512,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	}
 	
 	// Send message
-	errorDescription = [self sendMailWithMessage:[[message copy] autorelease] subject:NSLocalizedString(@"Sunrise Bug Report", nil) to:[NSArray arrayWithObject:kSBBugReportMailAddress]];
+	errorDescription = [self sendMailWithMessage:[[message copy] autorelease] subject:NSLocalizedString(@"Sunrise Bug Report", nil) to:@[kSBBugReportMailAddress]];
 	if (!errorDescription)
 	{
 		[self done];

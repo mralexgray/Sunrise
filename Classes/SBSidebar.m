@@ -193,7 +193,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		view = [aView retain];
 		[view setFrame:[self viewRect]];
 		if ([[self subviews] count] > 0)
-			[self addSubview:view positioned:NSWindowBelow relativeTo:[[self subviews] objectAtIndex:0]];
+			[self addSubview:view positioned:NSWindowBelow relativeTo:[self subviews][0]];
 		else
 			[self addSubview:view];
 	}
@@ -305,12 +305,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		NSTimeInterval duration = 0.25;
 		NSMutableArray *animations = [NSMutableArray arrayWithCapacity:0];
 		NSMutableDictionary *info = [NSMutableDictionary dictionaryWithCapacity:0];
-		[info setObject:subview0 forKey:NSViewAnimationTargetKey];
-		[info setObject:[NSValue valueWithRect:r0] forKey:NSViewAnimationEndFrameKey];
+		info[NSViewAnimationTargetKey] = subview0;
+		info[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:r0];
 		[animations addObject:[[info copy] autorelease]];
 		[info removeAllObjects];
-		[info setObject:subview1 forKey:NSViewAnimationTargetKey];
-		[info setObject:[NSValue valueWithRect:r1] forKey:NSViewAnimationEndFrameKey];
+		info[NSViewAnimationTargetKey] = subview1;
+		info[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:r1];
 		[animations addObject:[[info copy] autorelease]];
 		[self destructDividerAnimation];
 		_divideAnimation = [[NSViewAnimation alloc] initWithViewAnimations:animations];

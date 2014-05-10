@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		[self constructContentView];
 		[self constructItems];
-		[self registerForDraggedTypes:[NSArray arrayWithObjects:SBBookmarkPboardType, NSURLPboardType, NSFilenamesPboardType, nil]];
+		[self registerForDraggedTypes:@[SBBookmarkPboardType, NSURLPboardType, NSFilenamesPboardType]];
 		_animating = NO;
 	}
 	return self;
@@ -470,15 +470,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		if (count > 0)
 		{
-			item = [items objectAtIndex:index];
+			item = items[index];
 		}
 	}
 	else if (index == count)
 	{
-		item = [items objectAtIndex:index - 1];
+		item = items[index - 1];
 	}
 	else {
-		item = [items objectAtIndex:index];
+		item = items[index];
 	}
 	if (item)
 	{
@@ -539,7 +539,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			}
 		}
 		if (!item)
-			item = [items objectAtIndex:0];
+			item = items[0];
 		[self selectItem:item];
 	}
 	else {
@@ -594,7 +594,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (void)closeItemFromMenu:(NSMenuItem *)menuItem
 {
-	SBTabbarItem *item = [items objectAtIndex:[menuItem tag]];
+	SBTabbarItem *item = items[[menuItem tag]];
 	if (item)
 	{
 		[self closeItem:item];
@@ -614,7 +614,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (void)reloadItemFromMenu:(NSMenuItem *)menuItem
 {
-	SBTabbarItem *item = [items objectAtIndex:[menuItem tag]];
+	SBTabbarItem *item = items[[menuItem tag]];
 	if (item)
 	{
 		[self executeShouldReloadItem:item];
@@ -690,7 +690,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		NSDictionary *userInfo = nil;
 		NSPoint point = NSZeroPoint;
-		userInfo = [NSDictionary dictionaryWithObject:theEvent forKey:@"Event"];
+		userInfo = @{@"Event": theEvent};
 		point = [self convertPoint:[theEvent locationInWindow] fromView:nil];
 		if ([self autoScrollWithPoint:point])
 		{
@@ -702,7 +702,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (void)mouseDraggedWithTimer:(NSTimer *)timer
 {
-	NSEvent *theEvent = [[timer userInfo] objectForKey:@"Event"];
+	NSEvent *theEvent = [timer userInfo][@"Event"];
 	[self mouseDragged:theEvent];
 }
 
@@ -800,9 +800,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		if (!NSEqualRects(item.frame, r) && !_animating)
 		{
 			info = [NSMutableDictionary dictionaryWithCapacity:0];
-			[info setObject:item forKey:NSViewAnimationTargetKey];
-			[info setObject:[NSValue valueWithRect:item.frame] forKey:NSViewAnimationStartFrameKey];
-			[info setObject:[NSValue valueWithRect:r] forKey:NSViewAnimationEndFrameKey];
+			info[NSViewAnimationTargetKey] = item;
+			info[NSViewAnimationStartFrameKey] = [NSValue valueWithRect:item.frame];
+			info[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:r];
 			[animations addObject:[[info copy] autorelease]];
 		}
 		else {
@@ -814,9 +814,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	if (!NSEqualRects(addButton.frame, r) && !_animating)
 	{
 		info = [NSMutableDictionary dictionaryWithCapacity:0];
-		[info setObject:addButton forKey:NSViewAnimationTargetKey];
-		[info setObject:[NSValue valueWithRect:addButton.frame] forKey:NSViewAnimationStartFrameKey];
-		[info setObject:[NSValue valueWithRect:r] forKey:NSViewAnimationEndFrameKey];
+		info[NSViewAnimationTargetKey] = addButton;
+		info[NSViewAnimationStartFrameKey] = [NSValue valueWithRect:addButton.frame];
+		info[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:r];
 		[animations addObject:[[info copy] autorelease]];
 	}
 	
@@ -855,7 +855,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		urls = [NSMutableArray arrayWithCapacity:0];
 		for (NSDictionary *item in pbItems)
 		{
-			NSString *urlString = [item objectForKey:kSBBookmarkURL];
+			NSString *urlString = item[kSBBookmarkURL];
 			NSURL *url = [urlString length] ? [NSURL URLWithString:urlString] : nil;
 			if (url)
 			{
@@ -869,7 +869,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				SBTabbarItem *item = nil;
 				if ((item = [self itemAtPoint:point]))
 				{
-					[self executeShouldOpenURLs:[NSArray arrayWithObject:[urls objectAtIndex:0]] startInItem:item];
+					[self executeShouldOpenURLs:@[urls[0]] startInItem:item];
 				}
 				else {
 					[self executeShouldAddNewItemForURLs:[[urls copy] autorelease]];
@@ -886,10 +886,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		SBTabbarItem *item = nil;
 		if ((item = [self itemAtPoint:point]))
 		{
-			[self executeShouldOpenURLs:[NSArray arrayWithObject:url] startInItem:item];
+			[self executeShouldOpenURLs:@[url] startInItem:item];
 		}
 		else {
-			[self executeShouldAddNewItemForURLs:[NSArray arrayWithObject:url]];
+			[self executeShouldAddNewItemForURLs:@[url]];
 		}
 	}
 	return r;

@@ -157,7 +157,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			searchbar.target = self;
 			searchbar.doneSelector = @selector(searchWithText:);
 			searchbar.cancelSelector = @selector(closeSearchbar);
-			splitView = [[SBFixedSplitView splitViewWithEmbedViews:[NSArray arrayWithObjects:searchbar, scrollView, nil] frameRect:scrollView.frame] retain];
+			splitView = [[SBFixedSplitView splitViewWithEmbedViews:@[searchbar, scrollView] frameRect:scrollView.frame] retain];
 			[splitView setAutoresizingMask:(NSViewWidthSizable | NSViewHeightSizable)];
 			[searchbar autorelease];
 			r = YES;

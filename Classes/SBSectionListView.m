@@ -276,31 +276,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	tr.size.height = 24.0;
 	tr.origin.y += r.size.height - tr.size.height - 5.0;
 	tr.size.width -= kSBSectionInnerMarginX * 2;
-	attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-				  [NSFont boldSystemFontOfSize:13.0], NSFontAttributeName, 
-				  [NSColor colorWithCalibratedWhite:0.65 alpha:1.0], NSForegroundColorAttributeName, nil];
+	attributes = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:13.0], 
+				  NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.65 alpha:1.0]};
 	[groupe.title drawInRect:tr withAttributes:attributes];
 	tr.origin.y -= 1.0;
 	tr.origin.x += 1.0;
-	attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-				  [NSFont boldSystemFontOfSize:13.0], NSFontAttributeName, 
-				  [NSColor colorWithCalibratedWhite:0.55 alpha:1.0], NSForegroundColorAttributeName, nil];
+	attributes = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:13.0], 
+				  NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.55 alpha:1.0]};
 	[groupe.title drawInRect:tr withAttributes:attributes];
 	tr.origin.x -= 2.0;
-	attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-				  [NSFont boldSystemFontOfSize:13.0], NSFontAttributeName, 
-				  [NSColor colorWithCalibratedWhite:0.55 alpha:1.0], NSForegroundColorAttributeName, nil];
+	attributes = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:13.0], 
+				  NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.55 alpha:1.0]};
 	[groupe.title drawInRect:tr withAttributes:attributes];
 	tr.origin.y -= 2.0;
 	tr.origin.x += 1.0;
-	attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-				  [NSFont boldSystemFontOfSize:13.0], NSFontAttributeName, 
-				  [NSColor colorWithCalibratedWhite:0.45 alpha:1.0], NSForegroundColorAttributeName, nil];
+	attributes = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:13.0], 
+				  NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.45 alpha:1.0]};
 	[groupe.title drawInRect:tr withAttributes:attributes];
 	tr.origin.y += 2.0;
-	attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-				  [NSFont boldSystemFontOfSize:13.0], NSFontAttributeName, 
-				  [NSColor colorWithCalibratedWhite:1.0 alpha:1.0], NSForegroundColorAttributeName, nil];
+	attributes = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:13.0], 
+				  NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:1.0 alpha:1.0]};
 	[groupe.title drawInRect:tr withAttributes:attributes];
 }
 
@@ -539,10 +534,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	titleRect = [self titleRect];
 	paragraph = [[NSMutableParagraphStyle alloc] init];
 	[paragraph setAlignment:NSRightTextAlignment];
-	attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-				  [NSFont boldSystemFontOfSize:12.0], NSFontAttributeName, 
-				  [NSColor colorWithCalibratedWhite:0.3 alpha:1.0], NSForegroundColorAttributeName, 
-				  paragraph, NSParagraphStyleAttributeName, nil];
+	attributes = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:12.0], 
+				  NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.3 alpha:1.0], 
+				  NSParagraphStyleAttributeName: paragraph};
 	titleRect.size.height = [titleString sizeWithAttributes:attributes].height;
 	titleRect.origin.y = (self.bounds.size.height - titleRect.size.height) / 2;
 	[titleString drawInRect:titleRect withAttributes:attributes];

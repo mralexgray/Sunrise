@@ -129,7 +129,7 @@
 {
 	NSRect r = [self messageLabelRect];
 	NSFont *font = [NSFont boldSystemFontOfSize:16];
-	NSSize size = [inMessage sizeWithAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]];
+	NSSize size = [inMessage sizeWithAttributes:@{NSFontAttributeName: font}];
 	messageLabel = [[NSTextField alloc] initWithFrame:r];
 	[messageLabel setAutoresizingMask:(NSViewMinXMargin | NSViewMinYMargin)];
 	[messageLabel setEditable:NO];

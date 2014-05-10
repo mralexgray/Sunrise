@@ -144,7 +144,7 @@
 {
 	NSRect r = [self textLabelRect];
 	NSFont *font = [self textFont];
-	NSSize size = [inText sizeWithAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]];
+	NSSize size = [inText sizeWithAttributes:@{NSFontAttributeName: font}];
 	textLabel = [[NSTextField alloc] initWithFrame:r];
 	[textLabel setEditable:NO];
 	[textLabel setBordered:NO];

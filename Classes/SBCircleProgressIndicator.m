@@ -287,14 +287,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				NSDictionary *sattributes = nil;
 				NSRect tr = NSZeroRect;
 				NSRect sr = NSZeroRect;
-				attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-							  [NSFont boldSystemFontOfSize:10.0], NSFontAttributeName, 
-							  [NSColor whiteColor], NSForegroundColorAttributeName, 
-							  nil];
-				sattributes = [NSDictionary dictionaryWithObjectsAndKeys:
-							   [NSFont boldSystemFontOfSize:10.0], NSFontAttributeName, 
-							   [NSColor colorWithCalibratedWhite:0.0 alpha:0.75], NSForegroundColorAttributeName, 
-							   nil];
+				attributes = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:10.0], 
+							  NSForegroundColorAttributeName: [NSColor whiteColor]};
+				sattributes = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:10.0], 
+							   NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.0 alpha:0.75]};
 				tr.size = [percentage sizeWithAttributes:attributes];
 				tr.origin.x = (r.size.width - tr.size.width) / 2;
 				tr.origin.y = (r.size.height - tr.size.height) / 2;

@@ -70,7 +70,7 @@ static SBBookmarks *sharedBookmarks;
 	NSUInteger i = 0;
 	for (NSDictionary *item in items)
 	{
-		if ([[item objectForKey:kSBBookmarkURL] isEqualToString:urlString])
+		if ([item[kSBBookmarkURL] isEqualToString:urlString])
 		{
 			index = i;
 			break;
@@ -83,9 +83,9 @@ static SBBookmarks *sharedBookmarks;
 - (BOOL)isEqualBookmarkItems:(NSDictionary *)item1 anotherItem:(NSDictionary *)item2
 {
 	BOOL r = NO;
-	r = ([[item1 objectForKey:kSBBookmarkTitle] isEqualToString:[item2 objectForKey:kSBBookmarkTitle]] && 
-		 [[item1 objectForKey:kSBBookmarkURL] isEqualToString:[item2 objectForKey:kSBBookmarkURL]] && 
-		 [[item1 objectForKey:kSBBookmarkImage] isEqualToData:[item2 objectForKey:kSBBookmarkImage]]);
+	r = ([item1[kSBBookmarkTitle] isEqualToString:item2[kSBBookmarkTitle]] && 
+		 [item1[kSBBookmarkURL] isEqualToString:item2[kSBBookmarkURL]] && 
+		 [item1[kSBBookmarkImage] isEqualToData:item2[kSBBookmarkImage]]);
 	return r;
 }
 
@@ -94,7 +94,7 @@ static SBBookmarks *sharedBookmarks;
 	NSDictionary *item = nil;
 	if (index < [items count])
 	{
-		item = [items objectAtIndex:index];
+		item = items[index];
 	}
 	return item;
 }
@@ -184,7 +184,7 @@ static SBBookmarks *sharedBookmarks;
 	NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:path];
 	if (info)
 	{
-		NSArray *bookmarkItems = [info objectForKey:kSBBookmarkItems];
+		NSArray *bookmarkItems = info[kSBBookmarkItems];
 		if ([bookmarkItems count] > 0)
 		{
 			[items removeAllObjects];
@@ -221,13 +221,13 @@ static SBBookmarks *sharedBookmarks;
 {
 	if (item)
 	{
-		NSUInteger index = [self indexOfURL:[item objectForKey:kSBBookmarkURL]];
+		NSUInteger index = [self indexOfURL:item[kSBBookmarkURL]];
 		if (index == NSNotFound)
 		{
 			[items addObject:item];
 		}
 		else {
-			[items replaceObjectAtIndex:index withObject:item];
+			items[index] = item;
 		}
 		[self writeToFile];
 		[self performSelector:@selector(notifyDidUpdate) withObject:nil afterDelay:0];
@@ -236,7 +236,7 @@ static SBBookmarks *sharedBookmarks;
 
 - (void)replaceItem:(NSDictionary *)item atIndex:(NSUInteger)index
 {
-	[items replaceObjectAtIndex:index withObject:item];
+	items[index] = item;
 	[self writeToFile];
 	[self performSelector:@selector(notifyDidUpdate) withObject:nil afterDelay:0];
 }
@@ -246,7 +246,7 @@ static SBBookmarks *sharedBookmarks;
 	NSUInteger index = [items indexOfObject:oldItem];
 	if (index != NSNotFound)
 	{
-		[items replaceObjectAtIndex:index withObject:newItem];
+		items[index] = newItem;
 		[self writeToFile];
 		[self performSelector:@selector(notifyDidUpdate) withObject:nil afterDelay:0];
 	}
@@ -307,8 +307,8 @@ static SBBookmarks *sharedBookmarks;
 	NSUInteger i = 0;
 	for (i = [indexes lastIndex]; i != NSNotFound; i = [indexes indexLessThanIndex:i])
 	{
-		NSMutableDictionary *item = [[items objectAtIndex:i] mutableCopy];
-		[item setObject:labelName forKey:kSBBookmarkLabelName];
+		NSMutableDictionary *item = [items[i] mutableCopy];
+		item[kSBBookmarkLabelName] = labelName;
 		[items removeObjectAtIndex:i];
 		[items insertObject:[[item copy] autorelease] atIndex:i];
 		[item release];

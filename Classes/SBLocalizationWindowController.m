@@ -320,7 +320,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			NSInteger j = 0;
 			for (NSTextField *field in fields)
 			{
-				NSString *text = [[textSet objectAtIndex:i] objectAtIndex:j];
+				NSString *text = textSet[i][j];
 				if (text)
 					[field setStringValue:text];
 				j++;
@@ -392,7 +392,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
 	SBOpenPanel *panel = [SBOpenPanel openPanel];
 	NSString *directoryPath = SBApplicationSupportDirectory([kSBApplicationSupportDirectoryName stringByAppendingPathComponent:kSBLocalizationsDirectoryName]);
-	[panel setAllowedFileTypes:[NSArray arrayWithObject:@"strings"]];
+	[panel setAllowedFileTypes:@[@"strings"]];
 	[panel beginSheetForDirectory:directoryPath file:nil modalForWindow:self.window modalDelegate:self didEndSelector:@selector(openDidEnd:returnCode:contextInfo:) contextInfo:nil];
 }
 
@@ -417,14 +417,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		if ([texts count] == 2)
 		{
-			NSString *text0 = [texts objectAtIndex:0];
-			NSString *text1 = [texts objectAtIndex:1];
+			NSString *text0 = texts[0];
+			NSString *text1 = texts[1];
 			for (NSArray *fields in fieldSet)
 			{
 				if ([fields count] == 2)
 				{
-					NSTextField *field0 = [fields objectAtIndex:0];
-					NSTextField *field1 = [fields objectAtIndex:1];
+					NSTextField *field0 = fields[0];
+					NSTextField *field1 = fields[1];
 					if ([[field0 stringValue] isEqualToString:text0] && ![[field1 stringValue] isEqualToString:text1])
 					{
 						[field1 setStringValue:text1];
@@ -500,14 +500,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		[aContentView addSubview:editView];
 	}
 	info = [NSMutableDictionary dictionaryWithCapacity:0];
-	[info setObject:editView forKey:NSViewAnimationTargetKey];
-	[info setObject:[NSValue valueWithRect:editRect0] forKey:NSViewAnimationStartFrameKey];
-	[info setObject:[NSValue valueWithRect:editRect1] forKey:NSViewAnimationEndFrameKey];
+	info[NSViewAnimationTargetKey] = editView;
+	info[NSViewAnimationStartFrameKey] = [NSValue valueWithRect:editRect0];
+	info[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:editRect1];
 	[animations addObject:[[info copy] autorelease]];
 	info = [NSMutableDictionary dictionaryWithCapacity:0];
-	[info setObject:contributeView forKey:NSViewAnimationTargetKey];
-	[info setObject:[NSValue valueWithRect:contributeRect0] forKey:NSViewAnimationStartFrameKey];
-	[info setObject:[NSValue valueWithRect:contributeRect1] forKey:NSViewAnimationEndFrameKey];
+	info[NSViewAnimationTargetKey] = contributeView;
+	info[NSViewAnimationStartFrameKey] = [NSValue valueWithRect:contributeRect0];
+	info[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:contributeRect1];
 	[animations addObject:[[info copy] autorelease]];
 	animation = [[[SBViewAnimation alloc] initWithViewAnimations:animations] autorelease];
 	animation.context = [NSNumber numberWithUnsignedInteger:index];

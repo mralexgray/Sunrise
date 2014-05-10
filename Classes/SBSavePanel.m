@@ -45,7 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	NSArray *subviews = [contentView subviews];
 	if ([subviews count] > 0)
 	{
-		id belowView = [subviews objectAtIndex:0];
+		id belowView = subviews[0];
 		SBSavePanelContentView *savePanelContentView = nil;
 		savePanelContentView = [[[SBSavePanelContentView alloc] initWithFrame:contentView.frame] autorelease];
 		[savePanelContentView setAutoresizingMask:(NSViewWidthSizable | NSViewHeightSizable)];
@@ -101,7 +101,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	NSArray *subviews = [contentView subviews];
 	if ([subviews count] > 0)
 	{
-		id belowView = [subviews objectAtIndex:0];
+		id belowView = subviews[0];
 		SBSavePanelContentView *savePanelContentView = nil;
 		savePanelContentView = [[[SBSavePanelContentView alloc] initWithFrame:contentView.frame] autorelease];
 		[savePanelContentView setAutoresizingMask:(NSViewWidthSizable | NSViewHeightSizable)];

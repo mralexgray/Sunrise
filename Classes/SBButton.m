@@ -260,11 +260,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		style = [[NSMutableParagraphStyle alloc] init];
 		[style setLineBreakMode:NSLineBreakByTruncatingTail];
 		color = [NSColor colorWithCalibratedWhite:1.0 alpha:keyView ? (pressed ? 0.5 : 1.0) : (pressed ? 0.25 : 0.5)];
-		attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-					  [NSFont boldSystemFontOfSize:11.0], NSFontAttributeName, 
-					  color, NSForegroundColorAttributeName, 
-					  shadow, NSShadowAttributeName, 
-					  style, NSParagraphStyleAttributeName, nil];
+		attributes = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:11.0], 
+					  NSForegroundColorAttributeName: color, 
+					  NSShadowAttributeName: shadow, 
+					  NSParagraphStyleAttributeName: style};
 		r.size = [title sizeWithAttributes:attributes];
 		if (r.size.width > (self.bounds.size.width - padding * 2))
 			r.size.width = (self.bounds.size.width - padding * 2);

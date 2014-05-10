@@ -153,8 +153,8 @@ static SBAboutView *_sharedView;
 	NSBundle *bundle = [NSBundle mainBundle];
 	NSDictionary *info = [bundle infoDictionary];
 	NSDictionary *localizedInfo = [bundle localizedInfoDictionary];
-	NSString *name = localizedInfo ? [localizedInfo objectForKey:@"CFBundleName"] : nil;
-	NSString *version = info ? [info objectForKey:@"CFBundleVersion"] : nil;
+	NSString *name = localizedInfo ? localizedInfo[@"CFBundleName"] : nil;
+	NSString *version = info ? info[@"CFBundleVersion"] : nil;
 	NSString *string = name ? (version ? [NSString stringWithFormat:@"%@ %@", name, version] : name) : nil;
 	if (string)
 	{
@@ -175,7 +175,7 @@ static SBAboutView *_sharedView;
 {
 	NSRect r = [self identifierLabelRect];
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-	NSString *string = info ? [info objectForKey:@"CFBundleIdentifier"] : nil;
+	NSString *string = info ? info[@"CFBundleIdentifier"] : nil;
 	if (string)
 	{
 		identifierLabel = [[NSTextField alloc] initWithFrame:r];
@@ -216,7 +216,7 @@ static SBAboutView *_sharedView;
 {
 	NSRect r = [self copyrightLabelRect];
 	NSDictionary *info = [[NSBundle mainBundle] localizedInfoDictionary];
-	NSString *string = info ? [info objectForKey:@"NSHumanReadableCopyright"] : nil;
+	NSString *string = info ? info[@"NSHumanReadableCopyright"] : nil;
 	if (string)
 	{
 		copyrightLabel = [[NSTextField alloc] initWithFrame:r];

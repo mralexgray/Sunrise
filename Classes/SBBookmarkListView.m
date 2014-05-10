@@ -51,7 +51,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		draggingLineView = nil;
 		toolsItemView = nil;
 		[self constructControls];
-		[self registerForDraggedTypes:[NSArray arrayWithObjects:SBBookmarkPboardType, NSURLPboardType, NSFilenamesPboardType, nil]];
+		[self registerForDraggedTypes:@[SBBookmarkPboardType, NSURLPboardType, NSFilenamesPboardType]];
 	}
 	return self;
 }
@@ -203,7 +203,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		index = loc.y;
 	}
 	if (index != NSNotFound)
-		view = [itemViews objectAtIndex:index];
+		view = itemViews[index];
 #else
 	for (SBBookmarkListItemView *itemView in itemViews)
 	{
@@ -731,15 +731,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		SBBookmarkListItemView *itemView = nil;
 		NSRect r = NSZeroRect;
 		NSRect visibleRect = [self visibleRect];
-		itemView = [itemViews objectAtIndex:index];
+		itemView = itemViews[index];
 		itemView.mode = mode;
 		r = [self itemRectAtIndex:index];
 		if (NSIntersectsRect(visibleRect, itemView.frame) || NSIntersectsRect(visibleRect, r))	// Only visible views
 		{
 			NSMutableDictionary *info = [NSMutableDictionary dictionaryWithCapacity:0];
-			[info setObject:itemView forKey:NSViewAnimationTargetKey];
-			[info setObject:[NSValue valueWithRect:itemView.frame] forKey:NSViewAnimationStartFrameKey];
-			[info setObject:[NSValue valueWithRect:r] forKey:NSViewAnimationEndFrameKey];
+			info[NSViewAnimationTargetKey] = itemView;
+			info[NSViewAnimationStartFrameKey] = [NSValue valueWithRect:itemView.frame];
+			info[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:r];
 			[animations addObject:[[info copy] autorelease]];
 		}
 		else {
@@ -830,7 +830,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	for (SBBookmarkListItemView *itemView in [itemViews reverseObjectEnumerator])
 	{
 		NSDictionary *item = nil;
-		item = [bookmarkItems count] > index ? [bookmarkItems objectAtIndex:index] : nil;
+		item = [bookmarkItems count] > index ? bookmarkItems[index] : nil;
 		if (item)
 		{
 			itemView.item = item;
@@ -927,8 +927,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		// Search in bookmarks
 		for (NSDictionary *bookmarkItem in self.items)
 		{
-			NSString *title = [bookmarkItem objectForKey:kSBBookmarkTitle];
-			NSString *urlString = [bookmarkItem objectForKey:kSBBookmarkURL];
+			NSString *title = bookmarkItem[kSBBookmarkTitle];
+			NSString *urlString = bookmarkItem[kSBBookmarkURL];
 			NSString *SchemelessUrlString = [urlString stringByDeletingScheme];
 			NSRange range = [title rangeOfString:text options:NSCaseInsensitiveSearch];
 			if (range.location == NSNotFound)
@@ -964,7 +964,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		_animationIndex = NSNotFound;
 	for (index = [indexes firstIndex]; index != NSNotFound; index = [indexes indexGreaterThanIndex:index])
 	{
-		SBBookmarkListItemView *itemView = [itemViews objectAtIndex:index];
+		SBBookmarkListItemView *itemView = itemViews[index];
 		if (firstIndex == NSNotFound && 
 			(_animationIndex == NSNotFound || (_animationIndex != NSNotFound && _animationIndex < index)))
 		{
@@ -989,9 +989,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			}
 			startRect.origin.x -= (startRect.size.width - endRect.size.width) / 2;
 			startRect.origin.y -= (startRect.size.height - endRect.size.height) / 2;
-			[info setObject:itemView forKey:NSViewAnimationTargetKey];
-			[info setObject:[NSValue valueWithRect:startRect] forKey:NSViewAnimationStartFrameKey];
-			[info setObject:[NSValue valueWithRect:endRect] forKey:NSViewAnimationEndFrameKey];
+			info[NSViewAnimationTargetKey] = itemView;
+			info[NSViewAnimationStartFrameKey] = [NSValue valueWithRect:startRect];
+			info[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:endRect];
 			[infos addObject:[[info copy] autorelease]];
 			
 			// Put to top level
@@ -1140,11 +1140,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			NSImage *image = [NSImage imageWithView:draggedItemView];
 			NSPoint dragLocation = NSMakePoint(point.x + _offset.width, point.y + (draggedItemView.frame.size.height - _offset.height));
 			NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSDragPboard];
-			NSString *title = [draggedItemView.item objectForKey:kSBBookmarkTitle];
-			NSData *imageData = [draggedItemView.item objectForKey:kSBBookmarkImage];
-			NSString *urlString = [draggedItemView.item objectForKey:kSBBookmarkURL];
+			NSString *title = (draggedItemView.item)[kSBBookmarkTitle];
+			NSData *imageData = (draggedItemView.item)[kSBBookmarkImage];
+			NSString *urlString = (draggedItemView.item)[kSBBookmarkURL];
 			NSURL *url = urlString ? [NSURL URLWithString:urlString] : nil;
-			[pasteboard declareTypes:[NSArray arrayWithObjects:SBBookmarkPboardType, NSURLPboardType, nil] owner:nil];
+			[pasteboard declareTypes:@[SBBookmarkPboardType, NSURLPboardType] owner:nil];
 			if (draggedItems)
 				[pasteboard setPropertyList:draggedItems forType:SBBookmarkPboardType];
 			if (url)
@@ -1279,7 +1279,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		[removeItem setTarget:bookmarks];
 		for (i = [indexes lastIndex]; i != NSNotFound; i = [indexes indexLessThanIndex:i])
 		{
-			NSDictionary *item = [bookmarks.items objectAtIndex:i];
+			NSDictionary *item = (bookmarks.items)[i];
 			if (item)
 				[representedItems addObject:item];
 		}

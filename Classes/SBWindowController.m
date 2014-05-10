@@ -31,7 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
 	NSRect frameRect = NSZeroRect;
 	NSWindow *window = nil;
-	NSScreen *screen = [[NSScreen screens] objectAtIndex:0];
+	NSScreen *screen = [NSScreen screens][0];
 	NSRect visibleRect = [screen visibleFrame];
 	viewSize = inViewSize;
 	frameRect.size.width = viewSize.width + 20 * 2;

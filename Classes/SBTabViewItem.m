@@ -367,7 +367,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					[sourceView retain];
 				}
 			}
-			webSplitView = [[SBFixedSplitView splitViewWithEmbedViews:[NSArray arrayWithObjects:findbar, webView, nil] frameRect:webView.frame] retain];
+			webSplitView = [[SBFixedSplitView splitViewWithEmbedViews:@[findbar, webView] frameRect:webView.frame] retain];
 			if (splitView)
 			{
 				if (sourceSplitView)
@@ -437,7 +437,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			findbar.doneSelector = @selector(executeCloseFindbar);
 			[sourceSaveButton setKeyEquivalent:[NSString string]];
 			[sourceCloseButton setKeyEquivalent:[NSString string]];
-			sourceSplitView = [[SBFixedSplitView splitViewWithEmbedViews:[NSArray arrayWithObjects:findbar, sourceView, nil] frameRect:sourceView.frame] retain];
+			sourceSplitView = [[SBFixedSplitView splitViewWithEmbedViews:@[findbar, sourceView] frameRect:sourceView.frame] retain];
 			[findbar selectText:nil];
 			[findbar release];
 		}
@@ -557,11 +557,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		bundle = [NSBundle mainBundle];
 		infoDictionary = [bundle infoDictionary];
 		localizedInfoDictionary = [bundle localizedInfoDictionary];
-		applicationName = [localizedInfoDictionary objectForKey:@"CFBundleName"];
-		if (!applicationName) applicationName = [infoDictionary objectForKey:@"CFBundleName"];
-		version = [infoDictionary objectForKey:@"CFBundleVersion"];
+		applicationName = localizedInfoDictionary[@"CFBundleName"];
+		if (!applicationName) applicationName = infoDictionary[@"CFBundleName"];
+		version = infoDictionary[@"CFBundleVersion"];
 		if (version) version = [version stringByDeletingSpaces];
-		safariVersion = [[[NSBundle bundleWithPath:@"/Applications/Safari.app"] infoDictionary] objectForKey:@"CFBundleVersion"];
+		safariVersion = [[NSBundle bundleWithPath:@"/Applications/Safari.app"] infoDictionary][@"CFBundleVersion"];
 		if (safariVersion)
 			safariVersion = [safariVersion substringFromIndex:1];
 		else
@@ -578,9 +578,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		applicationName = SBUserAgentNames[1];
 		bundle = [NSBundle bundleWithPath:[NSString stringWithFormat:@"/Applications/%@.app", applicationName]];
 		infoDictionary = [bundle infoDictionary];
-		version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-		if (!version) version = [infoDictionary objectForKey:@"CFBundleVersion"];
-		safariVersion = [[[NSBundle bundleWithPath:@"/Applications/Safari.app"] infoDictionary] objectForKey:@"CFBundleVersion"];
+		version = infoDictionary[@"CFBundleShortVersionString"];
+		if (!version) version = infoDictionary[@"CFBundleVersion"];
+		safariVersion = [[NSBundle bundleWithPath:@"/Applications/Safari.app"] infoDictionary][@"CFBundleVersion"];
 		if (safariVersion)
 			safariVersion = [safariVersion substringFromIndex:1];
 		else
@@ -809,7 +809,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			if (userInfo != nil)
 			{
 				NSInteger errorCode = [error code];
-				NSString *urlString = [userInfo objectForKey:NSErrorFailingURLStringKey];
+				NSString *urlString = userInfo[NSErrorFailingURLStringKey];
 				NSString *title = nil;
 				switch (errorCode)
 				{
@@ -908,10 +908,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						url = [NSURL URLWithString:urlString];
 						aTitle = NSLocalizedString(@"Server Certificate Untrusted", nil);
 						message = [NSString stringWithFormat:NSLocalizedString(@"The certificate for this website is invalid. You might be connecting to a website that is pretending to be \"%@\", which could put your confidential information at risk. Would you like to connect to the website anyway?", nil), [url host]];
-						info = [NSDictionary dictionaryWithObjectsAndKeys:
-								frame, WebElementFrameKey, 
-								url, WebElementLinkURLKey, 
-								aTitle, WebElementLinkTitleKey, nil];
+						info = @{WebElementFrameKey: frame, 
+								WebElementLinkURLKey: url, 
+								WebElementLinkTitleKey: aTitle};
 						[info retain];
 						NSBeginAlertSheet(aTitle, NSLocalizedString(@"Continue", nil), NSLocalizedString(@"Cancel", nil), nil, [sender window], self, @selector(serverCertificateUntrustedSheetDidEnd:returnCode:contextInfo:), nil, info, message);
 						break;
@@ -1119,7 +1118,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	id <WebOpenPanelResultListener> resultListener = (id <WebOpenPanelResultListener>)contextInfo;
 	if (returnCode == NSOKButton)
 	{
-		[resultListener chooseFilename:[[panel filenames] objectAtIndex:0]];
+		[resultListener chooseFilename:[panel filenames][0]];
 	}
 	[resultListener release];
 	[panel orderOut:nil];
@@ -1152,8 +1151,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			}
 		}
 	}
-	linkURL = [element objectForKey:WebElementLinkURLKey];
-	frame = [element objectForKey:WebElementFrameKey];
+	linkURL = element[WebElementLinkURLKey];
+	frame = element[WebElementFrameKey];
 	frameURL = [[[frame dataSource] request] URL];
 	applicationBundleIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kSBOpenApplicationBundleIdentifier];
 	applicationPath = applicationBundleIdentifier ? [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:applicationBundleIdentifier] : nil;
@@ -1161,9 +1160,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		NSBundle *bundle = nil;
 		bundle = [NSBundle bundleWithPath:applicationPath];
-		appName = [[bundle localizedInfoDictionary] objectForKey:@"CFBundleDisplayName"];
+		appName = [bundle localizedInfoDictionary][@"CFBundleDisplayName"];
 		if (!appName)
-			appName = [[bundle infoDictionary] objectForKey:@"CFBundleName"];
+			appName = [bundle infoDictionary][@"CFBundleName"];
 	}
 	
 	[menuItems addObjectsFromArray:defaultMenuItems];
@@ -1246,7 +1245,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			NSInteger tag = [item tag];
 			if (tag == 21)
 			{
-				[menuItems replaceObjectAtIndex:index withObject:newItem0];
+				menuItems[index] = newItem0;
 				[menuItems insertObject:newItem1 atIndex:index + 1];
 				replaced = YES;
 			}
@@ -1292,8 +1291,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	NSUInteger modifierFlags = 0;
 	NSUInteger navigationType = 0;
 	
-	modifierFlags = [[actionInformation objectForKey:WebActionModifierFlagsKey] unsignedIntegerValue];
-	navigationType = [[actionInformation objectForKey:WebActionNavigationTypeKey] unsignedIntegerValue];
+	modifierFlags = [actionInformation[WebActionModifierFlagsKey] unsignedIntegerValue];
+	navigationType = [actionInformation[WebActionNavigationTypeKey] unsignedIntegerValue];
 	
 	switch (navigationType)
 	{
@@ -1376,7 +1375,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
 	NSString *string = nil;
 	NSDictionary *userInfo = [error userInfo];
-	string = [userInfo objectForKey:@"NSErrorFailingURLStringKey"];
+	string = userInfo[@"NSErrorFailingURLStringKey"];
 	if (string)
 	{
 		NSURL *url = nil;
@@ -1448,7 +1447,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
 	SBOpenPanel *openPanel = [SBOpenPanel openPanel];
 	[openPanel setCanChooseDirectories:NO];
-	if ([openPanel runModalForTypes:[NSArray arrayWithObject:@"app"]] == NSOKButton)
+	if ([openPanel runModalForTypes:@[@"app"]] == NSOKButton)
 	{
 		NSString *name = nil;
 		NSString *filePath = nil;
@@ -1507,9 +1506,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	NSURL *url = nil;
 	NSString *title = nil;
 	
-	frame = [info objectForKey:WebElementFrameKey];
-	url = [info objectForKey:WebElementLinkURLKey];
-	title = [info objectForKey:WebElementLinkTitleKey];
+	frame = info[WebElementFrameKey];
+	url = info[WebElementLinkURLKey];
+	title = info[WebElementLinkTitleKey];
 	
 	if (frame && url)
 	{
@@ -1596,7 +1595,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		panel = [NSOpenPanel openPanel];
 		[panel setCanChooseFiles:YES];
 		[panel setCanChooseDirectories:NO];
-		[panel setAllowedFileTypes:[NSArray arrayWithObject:@"app"]];
+		[panel setAllowedFileTypes:@[@"app"]];
 		[panel setAllowsMultipleSelection:NO];
 		[panel setDirectory:@"/Applications"];
 		if ([panel runModal] == NSOKButton)
@@ -1622,7 +1621,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	BOOL r = NO;
     if (url && bundleIdentifier)
     {
-        r = [[NSWorkspace sharedWorkspace] openURLs:[NSArray arrayWithObject:url] withAppBundleIdentifier:bundleIdentifier options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifiers:nil];
+        r = [[NSWorkspace sharedWorkspace] openURLs:@[url] withAppBundleIdentifier:bundleIdentifier options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifiers:nil];
     }
 	return r;
 }

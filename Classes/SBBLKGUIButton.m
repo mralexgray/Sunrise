@@ -201,10 +201,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		else {
 			foregroundColor = [self isEnabled] ? ([self isHighlighted] ? [NSColor grayColor] : [NSColor whiteColor]) : (isDone ? [NSColor grayColor] : [NSColor darkGrayColor]);
 		}
-		attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-					  font, NSFontAttributeName, 
-					  foregroundColor, NSForegroundColorAttributeName, 
-					  nil];
+		attributes = @{NSFontAttributeName: font, 
+					  NSForegroundColorAttributeName: foregroundColor};
 		if (_buttonType == NSSwitchButton || _buttonType == NSRadioButton)
 		{
 			int i = 0, l = 0, h = 1;

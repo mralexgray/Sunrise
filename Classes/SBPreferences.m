@@ -45,25 +45,25 @@ static SBPreferences *_sharedPreferences;
 	NSString *homaepage = SBDefaultHomePage();
 	NSString *downloadsPath = SBDefaultSaveDownloadedFilesToPath();
 	// Common
-	[info setObject:[NSNumber numberWithFloat:kSBDefaultSidebarWidth] forKey:kSBSidebarWidth];
-	[info setObject:[NSNumber numberWithInteger:SBSidebarRightPosition] forKey:kSBSidebarPosition];
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBSidebarVisibilityFlag];
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBTabbarVisibilityFlag];
-	[info setObject:[NSNumber numberWithInteger:kSBDefaultBookmarkCellWidth] forKey:kSBBookmarkCellWidth];
-	[info setObject:[NSNumber numberWithInteger:SBBookmarkIconMode] forKey:kSBBookmarkMode];
-	[info setObject:SBUserAgentNames[0] forKey:kSBUserAgentName];
+	info[kSBSidebarWidth] = [NSNumber numberWithFloat:kSBDefaultSidebarWidth];
+	info[kSBSidebarPosition] = @(SBSidebarRightPosition);
+	info[kSBSidebarVisibilityFlag] = @YES;
+	info[kSBTabbarVisibilityFlag] = @YES;
+	info[kSBBookmarkCellWidth] = @kSBDefaultBookmarkCellWidth;
+	info[kSBBookmarkMode] = @(SBBookmarkIconMode);
+	info[kSBUserAgentName] = SBUserAgentNames[0];
 	// General
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBOpenNewWindowsWithHomePage];
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBOpenNewTabsWithHomePage];
+	info[kSBOpenNewWindowsWithHomePage] = @YES;
+	info[kSBOpenNewTabsWithHomePage] = @YES;
 	if (homaepage)
-		[info setObject:homaepage forKey:kSBHomePage];
+		info[kSBHomePage] = homaepage;
 	if (downloadsPath)
-		[info setObject:downloadsPath forKey:kSBSaveDownloadedFilesTo];
-	[info setObject:@"in the current tab" forKey:kSBOpenURLFromApplications];
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBQuitWhenTheLastWindowIsClosed];
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBConfirmBeforeClosingMultipleTabs];
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBCheckTheNewVersionAfterLaunching];
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBClearsAllCachesAfterLaunching];
+		info[kSBSaveDownloadedFilesTo] = downloadsPath;
+	info[kSBOpenURLFromApplications] = @"in the current tab";
+	info[kSBQuitWhenTheLastWindowIsClosed] = @YES;
+	info[kSBConfirmBeforeClosingMultipleTabs] = @YES;
+	info[kSBCheckTheNewVersionAfterLaunching] = @YES;
+	info[kSBClearsAllCachesAfterLaunching] = @YES;
 	// Appearance
 //	kSBAllowsAnimatedImageToLoop
 //	kSBAllowsAnimatedImages
@@ -71,22 +71,22 @@ static SBPreferences *_sharedPreferences;
 //	kSBDefaultEncoding
 //	kSBIncludeBackgroundsWhenPrinting
 	// Bookmarks
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBShowBookmarksWhenWindowOpens];
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBShowAlertWhenRemovingBookmark];
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBUpdatesImageWhenAccessingBookmarkURL];
+	info[kSBShowBookmarksWhenWindowOpens] = @YES;
+	info[kSBShowAlertWhenRemovingBookmark] = @YES;
+	info[kSBUpdatesImageWhenAccessingBookmarkURL] = @YES;
 	// Security
 //	kSBEnablePlugIns
 //	kSBEnableJava
 //	kSBEnableJavaScript
 //	kSBBlockPopUpWindows
-	[info setObject:[NSNumber numberWithBool:NO] forKey:kSBURLFieldShowsIDNAsASCII];
-	[info setObject:@"Only visited sites" forKey:kSBAcceptCookies];
+	info[kSBURLFieldShowsIDNAsASCII] = @NO;
+	info[kSBAcceptCookies] = @"Only visited sites";
 	// History
-	[info setObject:[NSNumber numberWithDouble:SBDefaultHistorySaveSeconds] forKey:kSBHistorySaveDays];
+	info[kSBHistorySaveDays] = [NSNumber numberWithDouble:SBDefaultHistorySaveSeconds];
 	// Advanced
 	// WebKitDeveloper
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kWebKitDeveloperExtras];
-	[info setObject:[NSNumber numberWithBool:YES] forKey:kSBWhenNewTabOpensMakeActiveFlag];
+	info[kWebKitDeveloperExtras] = @YES;
+	info[kSBWhenNewTabOpensMakeActiveFlag] = @YES;
 	[defaults registerDefaults:[[info copy] autorelease]];
 }
 
@@ -123,15 +123,15 @@ static SBPreferences *_sharedPreferences;
 	WebPreferences *preferences = SBGetWebPreferences();
 	if ([keyName isEqualToString:kSBAllowsAnimatedImageToLoop])
 	{
-		object = [NSNumber numberWithBool:[preferences allowsAnimatedImageLooping]];
+		object = @([preferences allowsAnimatedImageLooping]);
 	}
 	else if ([keyName isEqualToString:kSBAllowsAnimatedImages])
 	{
-		object = [NSNumber numberWithBool:[preferences allowsAnimatedImages]];
+		object = @([preferences allowsAnimatedImages]);
 	}
 	else if ([keyName isEqualToString:kSBLoadsImagesAutomatically])
 	{
-		object = [NSNumber numberWithBool:[preferences loadsImagesAutomatically]];
+		object = @([preferences loadsImagesAutomatically]);
 	}
 	else if ([keyName isEqualToString:kSBDefaultEncoding])
 	{
@@ -139,19 +139,19 @@ static SBPreferences *_sharedPreferences;
 	}
 	else if ([keyName isEqualToString:kSBIncludeBackgroundsWhenPrinting])
 	{
-		object = [NSNumber numberWithBool:[preferences shouldPrintBackgrounds]];
+		object = @([preferences shouldPrintBackgrounds]);
 	}
 	else if ([keyName isEqualToString:kSBEnablePlugIns])
 	{
-		object = [NSNumber numberWithBool:[preferences arePlugInsEnabled]];
+		object = @([preferences arePlugInsEnabled]);
 	}
 	else if ([keyName isEqualToString:kSBEnableJava])
 	{
-		object = [NSNumber numberWithBool:[preferences isJavaEnabled]];
+		object = @([preferences isJavaEnabled]);
 	}
 	else if ([keyName isEqualToString:kSBEnableJavaScript])
 	{
-		object = [NSNumber numberWithBool:[preferences isJavaScriptEnabled]];
+		object = @([preferences isJavaScriptEnabled]);
 	}
 	else if ([keyName isEqualToString:kSBBlockPopUpWindows])
 	{
@@ -165,7 +165,7 @@ static SBPreferences *_sharedPreferences;
 
 + (void)setBool:(BOOL)value forKey:(NSString *)keyName
 {
-	[self setObject:[NSNumber numberWithBool:value] forKey:keyName];
+	[self setObject:@(value) forKey:keyName];
 }
 
 + (void)setObject:(id)object forKey:(NSString *)keyName

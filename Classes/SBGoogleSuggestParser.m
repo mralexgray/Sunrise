@@ -62,7 +62,7 @@ NSString *kSBGSSuggestionAttributeDataArgumentName = @"data";
 	{
 		NSMutableDictionary *item = [NSMutableDictionary dictionaryWithCapacity:0];
 		_inCompleteSuggestion = YES;
-		[item setObject:[NSNumber numberWithInteger:kSBURLFieldItemGoogleSuggestType] forKey:kSBType];
+		item[kSBType] = @(kSBURLFieldItemGoogleSuggestType);
 		[self.items addObject:item];
 	}
 	else {
@@ -70,12 +70,12 @@ NSString *kSBGSSuggestionAttributeDataArgumentName = @"data";
 		{
 			if ([elementName isEqualToString:kSBGSSuggestionTagName])
 			{
-				NSString *dataText = [attributeDict objectForKey:kSBGSSuggestionAttributeDataArgumentName];
+				NSString *dataText = attributeDict[kSBGSSuggestionAttributeDataArgumentName];
 				if ([dataText length] > 0)
 				{
 					NSMutableDictionary *item = [self.items lastObject];
-					[item setObject:dataText forKey:kSBTitle];
-					[item setObject:[dataText searchURLString] forKey:kSBURL];
+					item[kSBTitle] = dataText;
+					item[kSBURL] = [dataText searchURLString];
 				}
 			}
 		}

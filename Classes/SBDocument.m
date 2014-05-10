@@ -167,7 +167,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSNumber *)createdIdentifier
 {
 	_identifier++;
-	return [NSNumber numberWithUnsignedInteger:_identifier];
+	return @(_identifier);
 }
 
 - (NSInteger)tabCount
@@ -567,7 +567,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	[loadView setAutoresizingMask:(NSViewWidthSizable | NSViewHeightSizable)];
 	loadButton = [[SBLoadButton alloc] initWithFrame:loadView.bounds];
 	[loadButton setAutoresizingMask:(NSViewWidthSizable | NSViewHeightSizable)];
-	loadButton.images = [NSArray arrayWithObjects:[NSImage imageNamed:@"Reload.png"], [NSImage imageNamed:@"Stop.png"], nil];
+	loadButton.images = @[[NSImage imageNamed:@"Reload.png"], [NSImage imageNamed:@"Stop.png"]];
 	loadButton.target = self;
 	loadButton.action = @selector(load:);
 	[loadView addSubview:loadButton];
@@ -616,7 +616,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	zoomButton0.image = [NSImage imageWithCGImage:SBZoomOutIconImage(NSSizeToCGSize(r0.size))];
 	zoomButton1.image = [NSImage imageWithCGImage:SBActualSizeIconImage(NSSizeToCGSize(r1.size))];
 	zoomButton2.image = [NSImage imageWithCGImage:SBZoomInIconImage(NSSizeToCGSize(r2.size))];
-	zoomButton.buttons = [NSArray arrayWithObjects:zoomButton0, zoomButton1, zoomButton2, nil];
+	zoomButton.buttons = @[zoomButton0, zoomButton1, zoomButton2];
 	[zoomView addSubview:zoomButton];
 }
 
@@ -806,8 +806,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)aToolbar
 {
 	NSArray *identifiers = nil;
-	identifiers = [NSArray arrayWithObjects:
-				   kSBToolbarURLFieldItemIdentifier, 
+	identifiers = @[kSBToolbarURLFieldItemIdentifier, 
 				   kSBToolbarLoadItemIdentifier, 
 				   kSBToolbarBookmarkItemIdentifier, 
 				   kSBToolbarHistoryItemIdentifier, 
@@ -821,15 +820,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				   kSBToolbarZoomItemIdentifier, 
 				   NSToolbarSpaceItemIdentifier, 
 				   NSToolbarFlexibleSpaceItemIdentifier, 
-				   NSToolbarPrintItemIdentifier, nil];
+				   NSToolbarPrintItemIdentifier];
 	return identifiers;
 }
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)aToolbar
 {
 	NSArray *identifiers = nil;
-	identifiers = [NSArray arrayWithObjects:
-				   kSBToolbarURLFieldItemIdentifier, 
+	identifiers = @[kSBToolbarURLFieldItemIdentifier, 
 				   kSBToolbarLoadItemIdentifier, 
 				   kSBToolbarBookmarkItemIdentifier, 
 				   kSBToolbarHistoryItemIdentifier, 
@@ -840,8 +838,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				   kSBToolbarBugsItemIdentifier, 
 				   kSBToolbarUserAgentItemIdentifier, 
 				   kSBToolbarSourceItemIdentifier, 
-				   kSBToolbarZoomItemIdentifier, 
-				   nil];
+				   kSBToolbarZoomItemIdentifier];
 	return identifiers;
 }
 
@@ -1506,7 +1503,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		{
 			SBWebResourceIdentifier *resourceIdentifier = nil;
 			NSString *identifier = [aTableColumn identifier];
-			resourceIdentifier = rowIndex < [resourceIdentifiers count] ? [resourceIdentifiers objectAtIndex:rowIndex] : nil;
+			resourceIdentifier = rowIndex < [resourceIdentifiers count] ? resourceIdentifiers[rowIndex] : nil;
 			if (resourceIdentifier)
 			{
 				if ([identifier isEqual:kSBURL])
@@ -1573,7 +1570,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		{
 			SBWebResourceIdentifier *resourceIdentifier = nil;
 			NSString *identifier = [aTableColumn identifier];
-			resourceIdentifier = rowIndex < [resourceIdentifiers count] ? [resourceIdentifiers objectAtIndex:rowIndex] : nil;
+			resourceIdentifier = rowIndex < [resourceIdentifiers count] ? resourceIdentifiers[rowIndex] : nil;
 			if (resourceIdentifier)
 			{
 				if ([identifier isEqual:kSBURL])
@@ -1652,7 +1649,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		if ((resourceIdentifiers = tabViewItem.resourceIdentifiers))
 		{
 			SBWebResourceIdentifier *resourceIdentifier = nil;
-			resourceIdentifier = rowIndex < [resourceIdentifiers count] ? [resourceIdentifiers objectAtIndex:rowIndex] : nil;
+			resourceIdentifier = rowIndex < [resourceIdentifiers count] ? resourceIdentifiers[rowIndex] : nil;
 			if (resourceIdentifier)
 			{
 				if (resourceIdentifier.request)
@@ -1699,7 +1696,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		if ((resourceIdentifiers = tabViewItem.resourceIdentifiers))
 		{
 			SBWebResourceIdentifier *resourceIdentifier = nil;
-			resourceIdentifier = rowIndex < [resourceIdentifiers count] ? [resourceIdentifiers objectAtIndex:rowIndex] : nil;
+			resourceIdentifier = rowIndex < [resourceIdentifiers count] ? resourceIdentifiers[rowIndex] : nil;
 			if (resourceIdentifier)
 			{
 				if (resourceIdentifier.URL)
@@ -1744,7 +1741,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (void)downloadsDidAddItem:(NSNotification *)aNotification
 {
-	SBDownload *item = [[aNotification userInfo] objectForKey:kSBDownloadsItem];
+	SBDownload *item = [aNotification userInfo][kSBDownloadsItem];
 	SBDownloadsView *downloadsView = nil;
 	if (!splitView.visibleSidebar)
 	{
@@ -1767,7 +1764,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (void)downloadsWillRemoveItem:(NSNotification *)aNotification
 {
-	NSArray *items = [[aNotification userInfo] objectForKey:kSBDownloadsItems];
+	NSArray *items = [aNotification userInfo][kSBDownloadsItems];
 	SBDownloadsView *downloadsView = (SBDownloadsView *)sidebar.drawer.view;
 	if (downloadsView)
 	{
@@ -1780,7 +1777,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (void)downloadsDidUpdateItem:(NSNotification *)aNotification
 {
-	SBDownload *item = [[aNotification userInfo] objectForKey:kSBDownloadsItem];
+	SBDownload *item = [aNotification userInfo][kSBDownloadsItem];
 	SBDownloadsView *downloadsView = (SBDownloadsView *)sidebar.drawer.view;
 	if (downloadsView)
 	{
@@ -1793,7 +1790,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (void)downloadsDidFinishItem:(NSNotification *)aNotification
 {
-	SBDownload *item = [[aNotification userInfo] objectForKey:kSBDownloadsItem];
+	SBDownload *item = [aNotification userInfo][kSBDownloadsItem];
 	SBDownloadsView *downloadsView = (SBDownloadsView *)sidebar.drawer.view;
 	if (downloadsView)
 	{
@@ -1806,7 +1803,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (void)downloadsDidFailItem:(NSNotification *)aNotification
 {
-	SBDownload *item = [[aNotification userInfo] objectForKey:kSBDownloadsItem];
+	SBDownload *item = [aNotification userInfo][kSBDownloadsItem];
 	SBDownloadsView *downloadsView = (SBDownloadsView *)sidebar.drawer.view;
 	if (downloadsView)
 	{
@@ -2119,12 +2116,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			urlField.gsItems = items;
 			if ([urlField.gsItems count] > 0)
 			{
-				[urlField.gsItems insertObject:[NSDictionary dictionaryWithObjectsAndKeys:
-												[[NSImage imageNamed:@"Icon_G.png"] TIFFRepresentation], kSBImage, 
-												NSLocalizedString(@"Suggestions", nil), kSBTitle, 
-												[NSNumber numberWithInteger:kSBURLFieldItemNoneType], kSBType, nil] atIndex:0];
+				[urlField.gsItems insertObject:@{kSBImage: [[NSImage imageNamed:@"Icon_G.png"] TIFFRepresentation], 
+												kSBTitle: NSLocalizedString(@"Suggestions", nil), 
+												kSBType: @(kSBURLFieldItemNoneType)} atIndex:0];
 			}
-			urlField.items = [NSMutableArray mutableArrayWithArrays:[NSArray arrayWithObjects:urlField.gsItems, urlField.bmItems, urlField.hItems, nil]];
+			urlField.items = [NSMutableArray mutableArrayWithArrays:@[urlField.gsItems, urlField.bmItems, urlField.hItems]];
 		}
 		else {
 			urlField.gsItems = nil;
@@ -2147,9 +2143,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	for (NSDictionary *bookmarkItem in bookmarks.items)
 	{
 		NSString *urlString = nil;
-		if ((urlString = [bookmarkItem objectForKey:kSBBookmarkURL]))
+		if ((urlString = bookmarkItem[kSBBookmarkURL]))
 		{
-			NSString *title = [bookmarkItem objectForKey:kSBBookmarkTitle];
+			NSString *title = bookmarkItem[kSBBookmarkTitle];
 			NSString *SchemelessUrlString = [urlString stringByDeletingScheme];
 			NSRange range = [title rangeOfString:string options:NSCaseInsensitiveSearch];
 			BOOL matchWithTitle = NO;
@@ -2169,13 +2165,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			{
 				NSMutableDictionary *item = [NSMutableDictionary dictionaryWithCapacity:0];
 				if (matchWithTitle)
-					[item setObject:title forKey:kSBTitle];
-				[item setObject:urlString forKey:kSBURL];
-				if ([bookmarkItem objectForKey:kSBBookmarkImage])
+					item[kSBTitle] = title;
+				item[kSBURL] = urlString;
+				if (bookmarkItem[kSBBookmarkImage])
 				{
-					[item setObject:[bookmarkItem objectForKey:kSBBookmarkImage] forKey:kSBImage];
+					item[kSBImage] = bookmarkItem[kSBBookmarkImage];
 				}
-				[item setObject:[NSNumber numberWithInteger:kSBURLFieldItemBookmarkType] forKey:kSBType];
+				item[kSBType] = @(kSBURLFieldItemBookmarkType);
 				[bmItems addObject:[[item copy] autorelease]];
 				[urlStrings addObject:urlString];
 			}
@@ -2200,12 +2196,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				{
 					NSMutableDictionary *item = [NSMutableDictionary dictionaryWithCapacity:0];
 					NSData *iconData = [historyItem icon] ? [[historyItem icon] TIFFRepresentation] : nil;
-					[item setObject:urlString forKey:kSBURL];
+					item[kSBURL] = urlString;
 					if (iconData)
 					{
-						[item setObject:iconData forKey:kSBImage];
+						item[kSBImage] = iconData;
 					}
-					[item setObject:[NSNumber numberWithInteger:kSBURLFieldItemHistoryType] forKey:kSBType];
+					item[kSBType] = @(kSBURLFieldItemHistoryType);
 					[hItems addObject:[[item copy] autorelease]];
 				}
 			}
@@ -2216,19 +2212,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	urlField.hItems = hItems;
 	if ([urlField.bmItems count] > 0)
 	{
-		[urlField.bmItems insertObject:[NSDictionary dictionaryWithObjectsAndKeys:
-										[[NSImage imageNamed:@"Icon_Bookmarks.png"] TIFFRepresentation], kSBImage, 
-										NSLocalizedString(@"Bookmarks", nil), kSBTitle, 
-										[NSNumber numberWithInteger:kSBURLFieldItemNoneType], kSBType, nil] atIndex:0];
+		[urlField.bmItems insertObject:@{kSBImage: [[NSImage imageNamed:@"Icon_Bookmarks.png"] TIFFRepresentation], 
+										kSBTitle: NSLocalizedString(@"Bookmarks", nil), 
+										kSBType: @(kSBURLFieldItemNoneType)} atIndex:0];
 	}
 	if ([urlField.hItems count] > 0)
 	{
-		[urlField.hItems insertObject:[NSDictionary dictionaryWithObjectsAndKeys:
-									   [[NSImage imageNamed:@"Icon_History.png"] TIFFRepresentation], kSBImage, 
-										NSLocalizedString(@"History", nil), kSBTitle, 
-										[NSNumber numberWithInteger:kSBURLFieldItemNoneType], kSBType, nil] atIndex:0];
+		[urlField.hItems insertObject:@{kSBImage: [[NSImage imageNamed:@"Icon_History.png"] TIFFRepresentation], 
+										kSBTitle: NSLocalizedString(@"History", nil), 
+										kSBType: @(kSBURLFieldItemNoneType)} atIndex:0];
 	}
-	urlField.items = [NSMutableArray mutableArrayWithArrays:[NSArray arrayWithObjects:urlField.bmItems, urlField.hItems, nil]];
+	urlField.items = [NSMutableArray mutableArrayWithArrays:@[urlField.bmItems, urlField.hItems]];
 }
 
 #pragma mark Actions
@@ -2309,8 +2303,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	}
 	for (i = 0; i < count; i++)
 	{
-		NSDictionary *item = [items objectAtIndex:i];
-		NSString *URLString = [item objectForKey:kSBBookmarkURL];
+		NSDictionary *item = items[i];
+		NSString *URLString = item[kSBBookmarkURL];
 		if (URLString)
 		{
 			if (i == 0)
@@ -2795,11 +2789,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			NSString *labelName = nil;
 			[self destructEditBookmarkView];
 			editBookmarkView = [[SBEditBookmarkView alloc] initWithFrame:NSMakeRect(0, 0, 880, 480)];
-			imageData = [item objectForKey:kSBBookmarkImage];
+			imageData = item[kSBBookmarkImage];
 			image = imageData ? [[[NSImage alloc] initWithData:imageData] autorelease] : nil;
-			title = [item objectForKey:kSBBookmarkTitle];
-			urlString = [item objectForKey:kSBBookmarkURL];
-			labelName = [item objectForKey:kSBBookmarkLabelName];
+			title = item[kSBBookmarkTitle];
+			urlString = item[kSBBookmarkURL];
+			labelName = item[kSBBookmarkLabelName];
 			editBookmarkView.index = index;
 			editBookmarkView.image = image;
 			editBookmarkView.title = title;
@@ -3304,18 +3298,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)debugAddDummyDownloads:(id)sender
 {
 	SBDownloads *downloads = [SBDownloads sharedDownloads];
-	NSArray *names = [NSArray arrayWithObjects:
-					  @"Long Long File Name", 
+	NSArray *names = @[@"Long Long File Name", 
 					  @"Long File Name", 
 					  @"Longfilename", 
 					  @"File Name", 
 					  @"Filename",  
 					  @"File", 
-					  @"F", nil];
+					  @"F"];
 	for (NSUInteger index = 0; index < [names count]; index++)
 	{
 		SBDownload *item = [SBDownload itemWithURL:[NSURL URLWithString:@"http://localhost/dummy"]];
-		item.name = [names objectAtIndex:index];
+		item.name = names[index];
 		item.path = @"/unknown";
 		[downloads addItem:item];
 	}
@@ -3328,7 +3321,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	SBDownloadsView *downloadsView = (SBDownloadsView *)sidebar.drawer.view;
 	for (NSUInteger index = 0; index < [names count]; index++)
 	{
-		SBDownload *item = [[downloads items] objectAtIndex:index];
+		SBDownload *item = [downloads items][index];
 		if (index == 0)
 		{
 			item.status = SBStatusUndone;

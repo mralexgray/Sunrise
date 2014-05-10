@@ -146,8 +146,8 @@
 		font = [self font];
 		paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
 		[paragraphStyle setLineBreakMode:lineBreakMode];
-		attribute = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, color, NSForegroundColorAttributeName, paragraphStyle, NSParagraphStyleAttributeName, nil];
-		sattribute = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, sTextColor, NSForegroundColorAttributeName, paragraphStyle, NSParagraphStyleAttributeName, nil];
+		attribute = @{NSFontAttributeName: font, NSForegroundColorAttributeName: color, NSParagraphStyleAttributeName: paragraphStyle};
+		sattribute = @{NSFontAttributeName: font, NSForegroundColorAttributeName: sTextColor, NSParagraphStyleAttributeName: paragraphStyle};
 		size = [title sizeWithAttributes:attribute];
 		if (size.width > (cellFrame.size.width - side * 2))
 			size.width = cellFrame.size.width - side * 2;

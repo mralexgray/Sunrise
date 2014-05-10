@@ -368,9 +368,9 @@
 				if (animated && (NSIntersectsRect(visibleRect, downloadView.frame) || NSIntersectsRect(visibleRect, r)))	// Only visible views
 				{
 					NSMutableDictionary *info = [NSMutableDictionary dictionaryWithCapacity:0];
-					[info setObject:downloadView forKey:NSViewAnimationTargetKey];
-					[info setObject:[NSValue valueWithRect:r0] forKey:NSViewAnimationStartFrameKey];
-					[info setObject:[NSValue valueWithRect:r1] forKey:NSViewAnimationEndFrameKey];
+					info[NSViewAnimationTargetKey] = downloadView;
+					info[NSViewAnimationStartFrameKey] = [NSValue valueWithRect:r0];
+					info[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:r1];
 					[animations addObject:[[info copy] autorelease]];
 				}
 				else {

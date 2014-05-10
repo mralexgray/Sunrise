@@ -130,11 +130,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			[shadow setShadowColor:[NSColor whiteColor]];
 			style = [[[NSMutableParagraphStyle alloc] init] autorelease];
 			[style setLineBreakMode:NSLineBreakByTruncatingTail];
-			attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-						  [NSFont boldSystemFontOfSize:11.0], NSFontAttributeName, 
-						  [NSColor blackColor], NSForegroundColorAttributeName, 
-						  shadow, NSShadowAttributeName, 
-						  style, NSParagraphStyleAttributeName, nil];
+			attributes = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:11.0], 
+						  NSForegroundColorAttributeName: [NSColor blackColor], 
+						  NSShadowAttributeName: shadow, 
+						  NSParagraphStyleAttributeName: style};
 			r.size = [itemTitle sizeWithAttributes:attributes];
 			if (r.size.width > (controlView.bounds.size.width - padding * 2))
 				r.size.width = (controlView.bounds.size.width - padding * 2);

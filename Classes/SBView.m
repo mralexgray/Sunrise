@@ -146,7 +146,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
 	NSView *subview = nil;
 	NSArray *subviews = [self subviews];
-	subview = [subviews count] > 0 ? [subviews objectAtIndex:0] : nil;
+	subview = [subviews count] > 0 ? subviews[0] : nil;
 	return subview;
 }
 
@@ -192,10 +192,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		NSViewAnimation *animation = nil;
 		NSMutableDictionary *info = [NSMutableDictionary dictionaryWithCapacity:0];
-		[info setObject:self forKey:NSViewAnimationTargetKey];
-		[info setObject:[NSValue valueWithRect:self.frame] forKey:NSViewAnimationStartFrameKey];
-		[info setObject:[NSValue valueWithRect:frame] forKey:NSViewAnimationEndFrameKey];
-		animation = [[[NSViewAnimation alloc] initWithViewAnimations:[NSArray arrayWithObject:info]] autorelease];
+		info[NSViewAnimationTargetKey] = self;
+		info[NSViewAnimationStartFrameKey] = [NSValue valueWithRect:self.frame];
+		info[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:frame];
+		animation = [[[NSViewAnimation alloc] initWithViewAnimations:@[info]] autorelease];
 		[animation setDuration:0.25];
 		[animation startAnimation];
 	}
@@ -240,8 +240,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	NSMutableArray *animations = [NSMutableArray arrayWithCapacity:0];
 	NSMutableDictionary *info = nil;
 	info = [NSMutableDictionary dictionaryWithCapacity:0];
-	[info setObject:self forKey:NSViewAnimationTargetKey];
-	[info setObject:NSViewAnimationFadeInEffect forKey:NSViewAnimationEffectKey];
+	info[NSViewAnimationTargetKey] = self;
+	info[NSViewAnimationEffectKey] = NSViewAnimationFadeInEffect;
 	[animations addObject:[[info copy] autorelease]];
 	animation = [[[NSViewAnimation alloc] initWithViewAnimations:animations] autorelease];
 	[animation setDuration:self.animationDuration];
@@ -255,8 +255,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	NSMutableArray *animations = [NSMutableArray arrayWithCapacity:0];
 	NSMutableDictionary *info = nil;
 	info = [NSMutableDictionary dictionaryWithCapacity:0];
-	[info setObject:self forKey:NSViewAnimationTargetKey];
-	[info setObject:NSViewAnimationFadeOutEffect forKey:NSViewAnimationEffectKey];
+	info[NSViewAnimationTargetKey] = self;
+	info[NSViewAnimationEffectKey] = NSViewAnimationFadeOutEffect;
 	[animations addObject:[[info copy] autorelease]];
 	animation = [[[NSViewAnimation alloc] initWithViewAnimations:animations] autorelease];
 	[animation setDuration:self.animationDuration];

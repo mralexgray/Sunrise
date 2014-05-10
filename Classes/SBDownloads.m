@@ -90,7 +90,7 @@ static SBDownloads *sharedDownloads;
 
 - (void)removeItem:(SBDownload *)item
 {
-	[self removeItems:[NSArray arrayWithObject:item]];
+	[self removeItems:@[item]];
 }
 
 - (void)removeItems:(NSArray *)inItems
@@ -111,25 +111,25 @@ static SBDownloads *sharedDownloads;
 
 - (void)executeDidAddItem:(SBDownload *)anItem
 {
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:anItem forKey:kSBDownloadsItem];
+	NSDictionary *userInfo = @{kSBDownloadsItem: anItem};
 	[[NSNotificationCenter defaultCenter] postNotificationName:SBDownloadsDidAddItemNotification object:self userInfo:userInfo];
 }
 
 - (void)executeWillRemoveItem:(NSArray *)inItems
 {
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:inItems forKey:kSBDownloadsItems];
+	NSDictionary *userInfo = @{kSBDownloadsItems: inItems};
 	[[NSNotificationCenter defaultCenter] postNotificationName:SBDownloadsWillRemoveItemNotification object:self userInfo:userInfo];
 }
 
 - (void)executeDidUpdateItem:(SBDownload *)anItem
 {
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:anItem forKey:kSBDownloadsItem];
+	NSDictionary *userInfo = @{kSBDownloadsItem: anItem};
 	[[NSNotificationCenter defaultCenter] postNotificationName:SBDownloadsDidUpdateItemNotification object:self userInfo:userInfo];
 }
 
 - (void)executeDidFinishItem:(SBDownload *)anItem
 {
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:anItem forKey:kSBDownloadsItem];
+	NSDictionary *userInfo = @{kSBDownloadsItem: anItem};
 	[[NSNotificationCenter defaultCenter] postNotificationName:SBDownloadsDidFinishItemNotification object:self userInfo:userInfo];
 }
 
@@ -290,7 +290,7 @@ static SBDownloads *sharedDownloads;
 - (NSNumber *)createdIdentifier
 {
 	_identifier++;
-	return [NSNumber numberWithUnsignedInteger:_identifier];
+	return @(_identifier);
 }
 
 @end

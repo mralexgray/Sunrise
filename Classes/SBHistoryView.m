@@ -241,7 +241,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
 	NSString *object = nil;
 	NSString *identifier = [aTableColumn identifier];
-	WebHistoryItem *item = (rowIndex < [items count]) ? [items objectAtIndex:rowIndex] : nil;
+	WebHistoryItem *item = (rowIndex < [items count]) ? items[rowIndex] : nil;
 	if ([identifier isEqual:kSBTitle])
 	{
 		object = item ? [item title] : nil;
@@ -260,7 +260,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	WebHistoryItem *item = (rowIndex < [items count]) ? [items objectAtIndex:rowIndex] : nil;
+	WebHistoryItem *item = (rowIndex < [items count]) ? items[rowIndex] : nil;
 	NSString *string = nil;
 	if ([identifier isEqualToString:kSBImage])
 	{
@@ -295,7 +295,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		NSColor *color = [NSColor whiteColor];
 		NSFont *font = [NSFont systemFontOfSize:14.0];
-		NSDictionary *attribute = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, color, NSForegroundColorAttributeName, nil];
+		NSDictionary *attribute = @{NSFontAttributeName: font, NSForegroundColorAttributeName: color};
 		NSAttributedString *attributedString = [[[NSAttributedString alloc] initWithString:string attributes:attribute] autorelease];
 		[aCell setAttributedStringValue:attributedString];
 	}
@@ -526,7 +526,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	NSIndexSet *indexes = [tableView selectedRowIndexes];
 	for (index = [indexes lastIndex]; index != NSNotFound; index = [indexes indexLessThanIndex:index])
 	{
-		WebHistoryItem *item = (index < [items count]) ? [items objectAtIndex:index] : nil;
+		WebHistoryItem *item = (index < [items count]) ? items[index] : nil;
 		NSString *URLString = [item URLString];
 		NSURL *url = URLString ? [NSURL URLWithString:URLString] : nil;
 		if (url)

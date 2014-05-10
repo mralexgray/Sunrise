@@ -50,9 +50,9 @@ SBDocument *SBGetSelectedDocument()
 		}
 	}
 	else {
-		if ([[documents objectAtIndex:0] isKindOfClass:[SBDocument class]])
+		if ([documents[0] isKindOfClass:[SBDocument class]])
 		{
-			document = [documents objectAtIndex:0];
+			document = documents[0];
 		}
 	}
 	return document;
@@ -101,7 +101,7 @@ NSRect SBDefaultDocumentWindowRect()
 {
 	NSRect r = NSZeroRect;
 	NSArray *screens = [NSScreen screens];
-	NSScreen *screen = [screens count] > 0 ? [screens objectAtIndex:0] : nil;
+	NSScreen *screen = [screens count] > 0 ? screens[0] : nil;
 	r = screen ? [screen visibleFrame] : NSZeroRect;
 	return r;
 }
@@ -146,13 +146,13 @@ NSDictionary *SBDefaultBookmarks()
 		NSString *title = nil;
 		NSData *imageData = nil;
 		NSString *URLString = nil;
-		title = [defaultItem objectForKey:kSBBookmarkTitle];
-		imageData = [defaultItem objectForKey:kSBBookmarkImage];
-		URLString = [defaultItem objectForKey:kSBBookmarkURL];
+		title = defaultItem[kSBBookmarkTitle];
+		imageData = defaultItem[kSBBookmarkImage];
+		URLString = defaultItem[kSBBookmarkURL];
 		if (!title) title = NSLocalizedString(@"Untitled", nil);
 		if (!URLString) URLString = @"http://www.example.com/";
 		if (!imageData) imageData = SBEmptyBookmarkImageData();
-		items = [NSArray arrayWithObject:SBCreateBookmarkItem(title, URLString, imageData, [NSDate date], nil, NSStringFromPoint(NSZeroPoint))];
+		items = @[SBCreateBookmarkItem(title, URLString, imageData, [NSDate date], nil, NSStringFromPoint(NSZeroPoint))];
 	}
 	return [items count] > 0 ? SBBookmarksWithItems(items) : nil;
 }
@@ -240,9 +240,8 @@ NSData *SBEmptyBookmarkImageData()
 NSDictionary *SBBookmarksWithItems(NSArray *items)
 {
 	NSDictionary *info = nil;
-	info = [NSDictionary dictionaryWithObjectsAndKeys:
-			SBBookmarkVersion, kSBBookmarkVersion, 
-			items, kSBBookmarkItems, nil];
+	info = @{kSBBookmarkVersion: SBBookmarkVersion, 
+			kSBBookmarkItems: items};
 	return info;
 }
 
@@ -251,17 +250,17 @@ NSDictionary *SBCreateBookmarkItem(NSString *title, NSString *url, NSData *image
 	NSMutableDictionary *item = nil;
 	item = [NSMutableDictionary dictionaryWithCapacity:0];
 	if (title)
-		[item setObject:title forKey:kSBBookmarkTitle];
+		item[kSBBookmarkTitle] = title;
 	if (url)
-		[item setObject:url forKey:kSBBookmarkURL];
+		item[kSBBookmarkURL] = url;
 	if (imageData)
-		[item setObject:imageData forKey:kSBBookmarkImage];
+		item[kSBBookmarkImage] = imageData;
 	if (date)
-		[item setObject:date forKey:kSBBookmarkDate];
+		item[kSBBookmarkDate] = date;
 	if (labelName)
-		[item setObject:labelName forKey:kSBBookmarkLabelName];
+		item[kSBBookmarkLabelName] = labelName;
 	if (offsetString)
-		[item setObject:offsetString forKey:kSBBookmarkOffset];
+		item[kSBBookmarkOffset] = offsetString;
 	return [[item copy] autorelease];
 }
 
@@ -295,10 +294,10 @@ NSArray *SBBookmarkItemsFromBookmarkDictionaryList(NSArray *bookmarkDictionaryLi
 		items = [NSMutableArray arrayWithCapacity:0];
 		for (NSDictionary *dictionary in bookmarkDictionaryList)
 		{
-			NSString *type = [dictionary objectForKey:@"WebBookmarkType"];
-			NSString *URLString = [dictionary objectForKey:@"URLString"];
-			NSDictionary *uriDictionary = [dictionary objectForKey:@"URIDictionary"];
-			NSString *title = uriDictionary ? [uriDictionary objectForKey:@"title"] : nil;
+			NSString *type = dictionary[@"WebBookmarkType"];
+			NSString *URLString = dictionary[@"URLString"];
+			NSDictionary *uriDictionary = dictionary[@"URIDictionary"];
+			NSString *title = uriDictionary ? uriDictionary[@"title"] : nil;
 			BOOL hasScheme = NO;
 			if ([type isEqualToString:@"WebBookmarkTypeLeaf"] && [URLString isURLString:&hasScheme])
 			{
@@ -308,10 +307,10 @@ NSArray *SBBookmarkItemsFromBookmarkDictionaryList(NSArray *bookmarkDictionaryLi
 					URLString = [@"http://" stringByAppendingString:[URLString stringByDeletingScheme]];
 				}
 				if (title)
-					[item setObject:title forKey:kSBBookmarkTitle];
+					item[kSBBookmarkTitle] = title;
 				if (emptyImageData)
-					[item setObject:emptyImageData forKey:kSBBookmarkImage];
-				[item setObject:URLString forKey:kSBBookmarkURL];
+					item[kSBBookmarkImage] = emptyImageData;
+				item[kSBBookmarkURL] = URLString;
 				[items addObject:[[item copy] autorelease]];
 			}
 		}
@@ -382,7 +381,7 @@ NSString *SBSearchPath(NSSearchPathDirectory searchPathDirectory, NSString *subd
 	NSFileManager *manager = nil;
 	manager = [NSFileManager defaultManager];
 	paths = NSSearchPathForDirectoriesInDomains(searchPathDirectory, NSUserDomainMask, YES);
-    path = [paths count] > 0 ? [paths objectAtIndex:0] : nil;
+    path = [paths count] > 0 ? paths[0] : nil;
 	if ([manager fileExistsAtPath:path])
 	{
 		if (subdirectory)
@@ -1874,13 +1873,13 @@ id SBValueForKey(NSString *keyName, NSDictionary *dictionary)
 {
 	id value = nil;
 	
-	value = [dictionary objectForKey:keyName];
+	value = dictionary[keyName];
 	if (value == nil) {
 		int i;
 		for (i = 0; i < [[dictionary allValues] count]; i++)
 		{
 			id object = nil;
-			object = [[dictionary allValues] objectAtIndex:i];
+			object = [dictionary allValues][i];
 			if ([object isKindOfClass:[NSDictionary class]]) {
 				value = SBValueForKey(keyName, object);
 			}
@@ -1888,7 +1887,7 @@ id SBValueForKey(NSString *keyName, NSDictionary *dictionary)
 	}
 	else if ([value isKindOfClass:[NSDictionary class]])
 	{
-		value = [[value allValues] objectAtIndex:0];
+		value = [value allValues][0];
 	}
 	return value;
 }
@@ -1917,7 +1916,7 @@ NSMenu *SBEncodingMenu(id target, SEL selector, BOOL showDefault)
 	// Get available encodings
     while (*encoding)	// Continue while encoding is NULL
 	{
-		[mencs addObject:[NSNumber numberWithUnsignedInteger:*encoding]];
+		[mencs addObject:@(*encoding)];
 		encoding++;
 	}
 	encs = [[mencs copy] autorelease];
@@ -2130,7 +2129,7 @@ NSData *SBLocalizableStringsData(NSArray *fieldSet)
 		NSString *text1 = nil;
 		if ([fields count] == 1)
 		{
-			field0 = [fields objectAtIndex:0];
+			field0 = fields[0];
 			text0 = field0 ? [field0 stringValue] : nil;
 			if (text0)
 			{
@@ -2139,8 +2138,8 @@ NSData *SBLocalizableStringsData(NSArray *fieldSet)
 		}
 		else if ([fields count] == 2)
 		{
-			field0 = [fields objectAtIndex:0];
-			field1 = [fields objectAtIndex:1];
+			field0 = fields[0];
+			field1 = fields[1];
 			text0 = field0 ? [field0 stringValue] : nil;
 			text1 = field1 ? [field1 stringValue] : nil;
 			if (text0 && text1)
@@ -2168,16 +2167,16 @@ NSDictionary *SBDebugViewStructure(NSView *view)
 		description = [view description];
 	else
 		description = [NSString stringWithFormat:@"%@ %@", view, NSStringFromRect([view frame])];
-	[info setObject:description forKey:@"Description"];
+	info[@"Description"] = description;
 	if (count > 0)
 	{
 		NSMutableArray *childs = [NSMutableArray arrayWithCapacity:0];
 		for (NSUInteger i = 0; i < count; i++)
 		{
-			id subview = [subviews objectAtIndex:i];
+			id subview = subviews[i];
 			[childs addObject:SBDebugViewStructure(subview)];
 		}
-		[info setObject:[[childs copy] autorelease] forKey:@"Children"];
+		info[@"Children"] = [[childs copy] autorelease];
 	}
 	return [[info copy] autorelease];
 }
@@ -2189,16 +2188,16 @@ NSDictionary *SBDebugLayerStructure(CALayer *layer)
 	NSString *description = nil;
 	NSUInteger count = [sublayers count];
 	description = [NSString stringWithFormat:@"%@ %@", layer, NSStringFromRect(NSRectFromCGRect([layer frame]))];
-	[info setObject:description forKey:@"Description"];
+	info[@"Description"] = description;
 	if (count > 0)
 	{
 		NSMutableArray *childs = [NSMutableArray arrayWithCapacity:0];
 		for (NSUInteger i = 0; i < count; i++)
 		{
-			id sublayer = [sublayers objectAtIndex:i];
+			id sublayer = sublayers[i];
 			[childs addObject:SBDebugLayerStructure(sublayer)];
 		}
-		[info setObject:[[childs copy] autorelease] forKey:@"Children"];
+		info[@"Children"] = [[childs copy] autorelease];
 	}
 	return [[info copy] autorelease];
 }
@@ -2207,7 +2206,7 @@ NSDictionary *SBDebugDumpMainMenu()
 {
 	NSMutableDictionary *info = [NSMutableDictionary dictionaryWithCapacity:0];
 	NSArray *items = SBDebugDumpMenu([[NSApplication sharedApplication] mainMenu]);
-	[info setObject:items forKey:@"MenuItems"];
+	info[@"MenuItems"] = items;
 	return [[info copy] autorelease];
 }
 
@@ -2228,23 +2227,23 @@ NSArray *SBDebugDumpMenu(NSMenu *menu)
 		NSUInteger keyEquivalentModifierMask = [item keyEquivalentModifierMask];
 		NSString *toolTip = [item toolTip];
 		if (title)
-			[info setObject:title forKey:@"Title"];
+			info[@"Title"] = title;
 		if (target)
-			[info setObject:[NSString stringWithFormat:@"%@", target] forKey:@"Target"];
+			info[@"Target"] = [NSString stringWithFormat:@"%@", target];
 		if (action)
-			[info setObject:NSStringFromSelector(action) forKey:@"Action"];
-		[info setObject:[NSNumber numberWithInteger:tag] forKey:@"Tag"];
-		[info setObject:[NSNumber numberWithInteger:state] forKey:@"State"];
+			info[@"Action"] = NSStringFromSelector(action);
+		info[@"Tag"] = @(tag);
+		info[@"State"] = @(state);
 		if (image)
-			[info setObject:[image TIFFRepresentation] forKey:@"Image"];
+			info[@"Image"] = [image TIFFRepresentation];
 		if (keyEquivalent)
-			[info setObject:keyEquivalent forKey:@"KeyEquivalent"];
-		[info setObject:[NSNumber numberWithUnsignedInteger:keyEquivalentModifierMask] forKey:@"KeyEquivalentModifierMask"];
+			info[@"KeyEquivalent"] = keyEquivalent;
+		info[@"KeyEquivalentModifierMask"] = @(keyEquivalentModifierMask);
 		if (toolTip)
-			[info setObject:toolTip forKey:@"ToolTip"];
+			info[@"ToolTip"] = toolTip;
 		if (submenu)
 		{
-			[info setObject:SBDebugDumpMenu(submenu) forKey:@"MenuItems"];
+			info[@"MenuItems"] = SBDebugDumpMenu(submenu);
 		}
 		[items addObject:[[info copy] autorelease]];
 	}

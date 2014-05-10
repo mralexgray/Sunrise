@@ -29,8 +29,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + (SBFixedSplitView *)splitViewWithEmbedViews:(NSArray *)views frameRect:(NSRect)frameRect
 {
 	SBFixedSplitView *splitView = nil;
-	NSView *view1 = [views count] > 0 ? [views objectAtIndex:0] : nil;
-	NSView *view2 = [views count] > 1 ? [views objectAtIndex:1] : nil;
+	NSView *view1 = [views count] > 0 ? views[0] : nil;
+	NSView *view2 = [views count] > 1 ? views[1] : nil;
 	NSView *superview = [view1 superview] ? [view1 superview] : ([view2 superview] ? [view2 superview] : nil);
 	if (superview)
 	{
@@ -54,8 +54,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	if (![self isVertical])
 	{
 		NSArray *subviews = [self subviews];
-		NSView *subview1 = [subviews count] > 0 ? [subviews objectAtIndex:0] : nil;
-		NSView *subview2 = [subviews count] > 1 ? [subviews objectAtIndex:1] : nil;
+		NSView *subview1 = [subviews count] > 0 ? subviews[0] : nil;
+		NSView *subview2 = [subviews count] > 1 ? subviews[1] : nil;
 		if (subview1 && subview2)
 		{
 			NSRect r1 = [subview1 frame];

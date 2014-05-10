@@ -524,11 +524,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
 	NSString *object = nil;
 	NSString *identifier = [aTableColumn identifier];
-	NSDictionary *item = (rowIndex < [items count]) ? [items objectAtIndex:rowIndex] : nil;
+	NSDictionary *item = (rowIndex < [items count]) ? items[rowIndex] : nil;
 	if ([identifier isEqual:kSBURL])
 	{
-		NSInteger type = [[item objectForKey:kSBType] integerValue];
-		NSString *title = item ? [item objectForKey:kSBTitle] : nil;
+		NSInteger type = [item[kSBType] integerValue];
+		NSString *title = item ? item[kSBTitle] : nil;
 		if (type == kSBURLFieldItemNoneType)
 		{
 			object = title;
@@ -540,7 +540,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		else if (type == kSBURLFieldItemBookmarkType || 
 				 type == kSBURLFieldItemHistoryType)
 		{
-			object = item ? [item objectForKey:kSBURL] : nil;
+			object = item ? item[kSBURL] : nil;
 			if (title)
 				object = title;
 		}
@@ -551,12 +551,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	NSDictionary *item = (rowIndex < [items count]) ? [items objectAtIndex:rowIndex] : nil;
-	NSInteger type = [[item objectForKey:kSBType] integerValue];
+	NSDictionary *item = (rowIndex < [items count]) ? items[rowIndex] : nil;
+	NSInteger type = [item[kSBType] integerValue];
 	if ([identifier isEqualToString:kSBURL])
 	{
 		NSString *string = nil;
-		NSString *title = item ? [item objectForKey:kSBTitle] : nil;
+		NSString *title = item ? item[kSBTitle] : nil;
 		NSData *data = nil;
 		NSImage *image = nil;
 		BOOL separator = NO;
@@ -564,7 +564,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		BOOL drawsImage = YES;
 		if (type == kSBURLFieldItemNoneType)
 		{
-			data = item ? [item objectForKey:kSBImage] : nil;
+			data = item ? item[kSBImage] : nil;
 			if (data)
 			{
 				image = [[[NSImage alloc] initWithData:data] autorelease];
@@ -582,13 +582,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		else if (type == kSBURLFieldItemBookmarkType || 
 				 type == kSBURLFieldItemHistoryType)
 		{
-			data = item ? [item objectForKey:kSBImage] : nil;
+			data = item ? item[kSBImage] : nil;
 			if (data)
 			{
 				image = [[[NSImage alloc] initWithData:data] autorelease];
 				[image setSize:NSMakeSize(16.0, 16.0)];
 			}
-			string = item ? [item objectForKey:kSBURL] : nil;
+			string = item ? item[kSBURL] : nil;
 			if (title)
 				string = title;
 		}
@@ -1071,7 +1071,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	CGFloat margin = 0;
 	
 	margin = 5.0;
-	attribute = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
+	attribute = @{NSFontAttributeName: font};
 	textSize = [urlString sizeWithAttributes:attribute];
 	size.height = [self bounds].size.height;
 	size.width = [self bounds].size.width + textSize.width + margin;
@@ -1142,7 +1142,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	pasteboard = [NSPasteboard pasteboardWithName:NSDragPboard];
 	title = [[self window] title];
 	imageData = [self selectedWebViewImageDataForBookmark];
-	[pasteboard declareTypes:[NSArray arrayWithObjects:NSURLPboardType, nil] owner:nil];
+	[pasteboard declareTypes:@[NSURLPboardType] owner:nil];
 	[[self url] writeToPasteboard:pasteboard];
 	if (title)
 		[pasteboard setString:title forType:NSStringPboardType];
@@ -1439,20 +1439,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	SBURLField *field = self.field;
 	if (index < [[field items] count])
 	{
-		NSDictionary *selectedItem = [[field items] objectAtIndex:index];
-		NSInteger type = [[selectedItem objectForKey:kSBType] integerValue];
+		NSDictionary *selectedItem = [field items][index];
+		NSInteger type = [selectedItem[kSBType] integerValue];
 		if (type == kSBURLFieldItemGoogleSuggestType)
 		{
-			NSString *title = [selectedItem objectForKey:kSBTitle];
+			NSString *title = selectedItem[kSBTitle];
 			[field setURLString:title];
 			r = YES;
 		}
 		else
 		{
-			NSString *URLString = [selectedItem objectForKey:kSBURL];
+			NSString *URLString = selectedItem[kSBURL];
 			if (![URLString isEqualToString:[field stringValue]])
 			{
-				NSData *data = [selectedItem objectForKey:kSBImage];
+				NSData *data = selectedItem[kSBImage];
 				NSImage *icon = [[[NSImage alloc] initWithData:data] autorelease];
 				[field setURLString:URLString];
 				[field setImage:icon];
@@ -1658,8 +1658,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		font = [NSFont systemFontOfSize:sectionHeader ? 11.0 : 12.0];
 		paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
 		[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
-		attribute = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, color, NSForegroundColorAttributeName, paragraphStyle, NSParagraphStyleAttributeName, nil];
-		sattribute = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, sTextColor, NSForegroundColorAttributeName, paragraphStyle, NSParagraphStyleAttributeName, nil];
+		attribute = @{NSFontAttributeName: font, NSForegroundColorAttributeName: color, NSParagraphStyleAttributeName: paragraphStyle};
+		sattribute = @{NSFontAttributeName: font, NSForegroundColorAttributeName: sTextColor, NSParagraphStyleAttributeName: paragraphStyle};
 		size = [title sizeWithAttributes:attribute];
 		if (size.width > (titleRect.size.width - side * 2))
 			size.width = titleRect.size.width - side * 2;

@@ -226,8 +226,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		BOOL switching = NO;
 		NSArray *subviews = [self subviews];
-		NSView *subview0 = [subviews count] > 0 ? [subviews objectAtIndex:0] : nil;
-		NSView *subview1 = [subviews count] > 1 ? [subviews objectAtIndex:1] : nil;
+		NSView *subview0 = [subviews count] > 0 ? subviews[0] : nil;
+		NSView *subview1 = [subviews count] > 1 ? subviews[1] : nil;
 		if (position == SBSidebarLeftPosition && subview0 == view && subview1 == sidebar)
 		{
 			switching = YES;

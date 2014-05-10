@@ -425,10 +425,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		[shadow setShadowOffset:NSMakeSize(0, -0.5)];
 		[shadow setShadowBlurRadius:0.5];
 		[paragraph setLineBreakMode:NSLineBreakByTruncatingTail];
-		[attributes setObject:[NSFont boldSystemFontOfSize:12.0] forKey:NSFontAttributeName];
-		[attributes setObject:[NSColor colorWithCalibratedWhite:0.1 alpha:1.0] forKey:NSForegroundColorAttributeName];
-		[attributes setObject:shadow forKey:NSShadowAttributeName];
-		[attributes setObject:paragraph forKey:NSParagraphStyleAttributeName];
+		attributes[NSFontAttributeName] = [NSFont boldSystemFontOfSize:12.0];
+		attributes[NSForegroundColorAttributeName] = [NSColor colorWithCalibratedWhite:0.1 alpha:1.0];
+		attributes[NSShadowAttributeName] = shadow;
+		attributes[NSParagraphStyleAttributeName] = paragraph;
 		size = [title sizeWithAttributes:attributes];
 		r.size = size;
 		if (size.width > width)

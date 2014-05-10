@@ -81,11 +81,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	NSText *text = [super setUpFieldEditorAttributes:textObj];
 	if ([text isKindOfClass:[NSTextView class]])
 	{
-		NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-									[NSColor whiteColor], 
-									NSForegroundColorAttributeName, 
-									[NSColor grayColor], 
-									NSBackgroundColorAttributeName, nil];
+		NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor whiteColor], 
+									NSBackgroundColorAttributeName: [NSColor grayColor]};
 		[(NSTextView *)text setInsertionPointColor:[NSColor whiteColor]];
 		[(NSTextView *)text setSelectedTextAttributes:attributes];
 	}

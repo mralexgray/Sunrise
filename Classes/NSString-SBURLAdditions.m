@@ -58,20 +58,20 @@ NSString *SBBytesUnitString = @"bytes";
 	NSString *string1 = nil;
 	if ([array1 count] > 1 && [array0 count] > 1)
 	{
-		string0 = [array0 objectAtIndex:0];
-		string1 = [array1 objectAtIndex:0];
+		string0 = array0[0];
+		string1 = array1[0];
 		result = [string0 compare:string1];
 		if (result == NSOrderedSame)
 		{
-			string0 = [array0 objectAtIndex:1];
-			string1 = [array1 objectAtIndex:1];
+			string0 = array0[1];
+			string1 = array1[1];
 			result = [string0 compare:string1];
 		}
 	}
 	else if ([array1 count] > 0 && [array0 count] > 1)
 	{
-		string0 = [array0 objectAtIndex:0];
-		string1 = [array1 objectAtIndex:0];
+		string0 = array0[0];
+		string1 = array1[0];
 		result = [string0 compare:string1];
 		if (result == NSOrderedSame)
 		{
@@ -80,8 +80,8 @@ NSString *SBBytesUnitString = @"bytes";
 	}
 	else if ([array1 count] > 1 && [array0 count] > 0)
 	{
-		string0 = [array0 objectAtIndex:0];
-		string1 = [array1 objectAtIndex:0];
+		string0 = array0[0];
+		string1 = array1[0];
 		result = [string0 compare:string1];
 		if (result == NSOrderedSame)
 		{
@@ -90,8 +90,8 @@ NSString *SBBytesUnitString = @"bytes";
 	}
 	else if ([array1 count] > 0 && [array0 count] > 0)
 	{
-		string0 = [array0 objectAtIndex:0];
-		string1 = [array1 objectAtIndex:0];
+		string0 = array0[0];
+		string1 = array1[0];
 		result = [string0 compare:string1];
 	}
 	return result;
@@ -325,7 +325,7 @@ NSString *SBBytesUnitString = @"bytes";
 	NSString *gSearchFormat = nil;
 	
 	info = [[NSBundle mainBundle] localizedInfoDictionary];
-	gSearchFormat = info ? [info objectForKey:@"SBGSearchFormat"] : nil;
+	gSearchFormat = info ? info[@"SBGSearchFormat"] : nil;
 	if (gSearchFormat)
 	{
 		str = [NSString stringWithFormat:gSearchFormat, stringValue];

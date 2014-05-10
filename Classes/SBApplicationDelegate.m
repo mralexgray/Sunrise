@@ -206,14 +206,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)updaterShouldUpdate:(NSNotification *)aNotification
 {
 	NSDictionary *userInfo = [aNotification userInfo];
-	NSString *versionString = [userInfo objectForKey:kSBUpdaterVersionString];
+	NSString *versionString = userInfo[kSBUpdaterVersionString];
 	[self update:versionString];
 }
 
 - (void)updaterNotNeedUpdate:(NSNotification *)aNotification
 {
 	NSDictionary *userInfo = [aNotification userInfo];
-	NSString *versionString = [userInfo objectForKey:kSBUpdaterVersionString];
+	NSString *versionString = userInfo[kSBUpdaterVersionString];
 	NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Sunrise %@ is currently the newest version available.", nil), versionString];
 	NSString *defaultButton = NSLocalizedString(@"OK", nil);
 	NSRunAlertPanel(title, [NSString string], defaultButton, nil, nil);
@@ -222,7 +222,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)updaterDidFailChecking:(NSNotification *)aNotification
 {
 	NSDictionary *userInfo = [aNotification userInfo];
-	NSString *errorDescription = [userInfo objectForKey:kSBUpdaterErrorDescription];
+	NSString *errorDescription = userInfo[kSBUpdaterErrorDescription];
 	NSString *title = errorDescription;
 	NSString *defaultButton = NSLocalizedString(@"OK", nil);
 	NSRunAlertPanel(title, [NSString string], defaultButton, nil, nil);
@@ -264,7 +264,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
 	SBDocumentWindow *window = [SBGetSelectedDocument() window];
 	NSDictionary *info = [[NSBundle mainBundle] localizedInfoDictionary];
-	NSString *urlString = info ? [info objectForKey:@"SBReleaseNotesURL"] : nil;
+	NSString *urlString = info ? info[@"SBReleaseNotesURL"] : nil;
 	[self destructUpdateView];
 	updateView = [[SBUpdateView alloc] initWithFrame:[window splitViewRect]];
 	updateView.title = [NSString stringWithFormat:NSLocalizedString(@"A new version of Sunrise %@ is available.", nil), versionString];
@@ -472,7 +472,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void)sunrisepage:(id)sender
 {
 	NSDictionary *info = [[NSBundle mainBundle] localizedInfoDictionary];
-	NSString *string = info ? [info objectForKey:@"SBHomePageURL"] : nil;
+	NSString *string = info ? info[@"SBHomePageURL"] : nil;
 	if (string)
 	{
 		SBDocument *document = SBGetSelectedDocument();
@@ -545,7 +545,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
 	SBOpenPanel *panel = [SBOpenPanel openPanel];
 	NSString *path = [[NSBundle mainBundle] resourcePath];
-	if ([panel runModalForDirectory:path file:nil types:[NSArray arrayWithObject:@"strings"]])
+	if ([panel runModalForDirectory:path file:nil types:@[@"strings"]])
 	{
 		NSMutableArray *tset = nil;
 		NSMutableArray *fset = nil;
@@ -554,11 +554,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		SBGetLocalizableTextSet([panel filename], &tset, &fset, &vsize);
 		for (NSArray *texts in tset)
 		{
-			NSString *text0 = [texts objectAtIndex:0];
+			NSString *text0 = texts[0];
 			NSUInteger i = 0;
 			for (NSArray *ts in tset)
 			{
-				NSString *t0 = [ts objectAtIndex:0];
+				NSString *t0 = ts[0];
 				if ([text0 isEqualToString:t0] && index != i)
 				{
 					NSLog(@"Same keys %d : %@", i, t0);

@@ -95,7 +95,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		images = inImages;
 		if ([images count] > 0)
 		{
-			self.image = [images objectAtIndex:0];
+			self.image = images[0];
 			[self setNeedsDisplay:YES];
 		}
 		on = NO;
@@ -133,16 +133,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		if (on)
 		{
-			if (self.image == [images objectAtIndex:0])
+			if (self.image == images[0])
 			{
-				self.image = [images objectAtIndex:1];
+				self.image = images[1];
 				[self setNeedsDisplay:YES];
 			}
 		}
 		else {
-			if (self.image == [images objectAtIndex:1])
+			if (self.image == images[1])
 			{
-				self.image = [images objectAtIndex:0];
+				self.image = images[0];
 				[self setNeedsDisplay:YES];
 			}
 		}

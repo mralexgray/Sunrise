@@ -143,7 +143,7 @@
 	NSPoint padding = mode == SBBookmarkIconMode ? [self padding] : NSZeroPoint;
 	CGFloat titleHeight = mode == SBBookmarkIconMode ? [self titleHeight] : 0.0;
 	CGFloat bytesHeight = mode == SBBookmarkIconMode ? [self bytesHeight] : 0.0;
-	NSData *imageData = [item objectForKey:kSBBookmarkImage];
+	NSData *imageData = item[kSBBookmarkImage];
 	NSImage *image = [[[NSImage alloc] initWithData:imageData] autorelease];
 	NSSize imageSize = image ? [image size] : NSZeroSize;
 	NSPoint p = NSZeroPoint;
@@ -171,7 +171,7 @@
 
 - (NSRect)titleRect
 {
-	return [self titleRect:(item ? [item objectForKey:kSBBookmarkTitle] : nil)];
+	return [self titleRect:(item ? item[kSBBookmarkTitle] : nil)];
 }
 
 - (NSRect)titleRect:(NSString *)title
@@ -185,9 +185,8 @@
 	CGFloat availableWidth = self.bounds.size.width - titleHeight;
 	if ([title length] > 0)
 	{
-		NSSize size = [title sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-												 self.titleFont, NSFontAttributeName, 
-												 self.paragraphStyle, NSParagraphStyleAttributeName, nil]];
+		NSSize size = [title sizeWithAttributes:@{NSFontAttributeName: self.titleFont, 
+												 NSParagraphStyleAttributeName: self.paragraphStyle}];
 		if (size.width <= availableWidth)
 		{
 			drawRect.origin.x = (availableWidth - size.width) / 2;
@@ -291,7 +290,7 @@
 
 - (void)update
 {
-	NSString *urlString = [item objectForKey:kSBBookmarkURL];
+	NSString *urlString = item[kSBBookmarkURL];
 	NSURL *url = urlString ? [NSURL URLWithString:urlString] : nil;
 	if (url)
 	{
@@ -351,7 +350,7 @@
 	{
 		SBBookmarks *bookmarks = [SBBookmarks sharedBookmarks];
 		NSMutableDictionary *mItem = [[item mutableCopy] autorelease];
-		[mItem setObject:data forKey:kSBBookmarkImage];
+		mItem[kSBBookmarkImage] = data;
 		[bookmarks replaceItem:item withItem:[[mItem copy] autorelease]];
 	}
 	[self hideProgress];
@@ -395,10 +394,10 @@
 		CGContextRef ctx = [[NSGraphicsContext currentContext] graphicsPort];
 		NSRect bounds = self.bounds;
 		NSRect r = NSZeroRect;
-		NSData *imageData = [item objectForKey:kSBBookmarkImage];
-		NSString *title = [item objectForKey:kSBBookmarkTitle];
-		NSString *urlString = [item objectForKey:kSBBookmarkURL];
-		NSString *labelColorName = [item objectForKey:kSBBookmarkLabelName];
+		NSData *imageData = item[kSBBookmarkImage];
+		NSString *title = item[kSBBookmarkTitle];
+		NSString *urlString = item[kSBBookmarkURL];
+		NSString *labelColorName = item[kSBBookmarkLabelName];
 		NSColor *labelColor = labelColorName ? [NSColor colorWithLabelColorName:labelColorName] : nil;
 		NSPoint padding = [self padding];
 		NSDictionary *attributes = nil;
@@ -515,11 +514,10 @@
 					[shadow setShadowBlurRadius:2.0];
 					[shadow setShadowColor:[NSColor blackColor]];
 				}
-				attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-							  self.titleFont, NSFontAttributeName, 
-							  [NSColor whiteColor], NSForegroundColorAttributeName, 
-							  self.paragraphStyle, NSParagraphStyleAttributeName, 
-							  shadow, NSShadowAttributeName, nil];
+				attributes = @{NSFontAttributeName: self.titleFont, 
+							  NSForegroundColorAttributeName: [NSColor whiteColor], 
+							  NSParagraphStyleAttributeName: self.paragraphStyle, 
+							  NSShadowAttributeName: shadow};
 				[shadow release];
 				size = [title sizeWithAttributes:attributes];
 				r.origin.y += (r.size.height - size.height) / 2;
@@ -530,10 +528,9 @@
 			if (urlString)
 			{
 				r = [self bytesRect];
-				attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-							  self.urlFont, NSFontAttributeName, 
-							  [NSColor lightGrayColor], NSForegroundColorAttributeName, 
-							  self.paragraphStyle, NSParagraphStyleAttributeName, nil];
+				attributes = @{NSFontAttributeName: self.urlFont, 
+							  NSForegroundColorAttributeName: [NSColor lightGrayColor], 
+							  NSParagraphStyleAttributeName: self.paragraphStyle};
 				size = [urlString sizeWithAttributes:attributes];
 				r.origin.y += (r.size.height - size.height) / 2;
 				r.size.height = size.height;
@@ -739,11 +736,10 @@
 					[shadow setShadowBlurRadius:2.0];
 					[shadow setShadowColor:[NSColor blackColor]];
 				}
-				attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-							  self.titleFont, NSFontAttributeName, 
-							  [NSColor whiteColor], NSForegroundColorAttributeName, 
-							  self.paragraphStyle, NSParagraphStyleAttributeName, 
-							  shadow, NSShadowAttributeName, nil];
+				attributes = @{NSFontAttributeName: self.titleFont, 
+							  NSForegroundColorAttributeName: [NSColor whiteColor], 
+							  NSParagraphStyleAttributeName: self.paragraphStyle, 
+							  NSShadowAttributeName: shadow};
 				[shadow release];
 				size = [title sizeWithAttributes:attributes];
 				titleRect.origin.y += (titleRect.size.height - size.height) / 2;
@@ -755,10 +751,9 @@
 			{
 				NSColor *color = nil;
 				color = selected ? [NSColor whiteColor] : (labelColor ? [NSColor blackColor] : [NSColor lightGrayColor]);
-				attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-							  self.urlFont, NSFontAttributeName, 
-							  color, NSForegroundColorAttributeName, 
-							  self.paragraphStyle, NSParagraphStyleAttributeName, nil];
+				attributes = @{NSFontAttributeName: self.urlFont, 
+							  NSForegroundColorAttributeName: color, 
+							  NSParagraphStyleAttributeName: self.paragraphStyle};
 				size = [urlString sizeWithAttributes:attributes];
 				urlRect.origin.y += (urlRect.size.height - size.height) / 2;
 				urlRect.size.height = size.height;
