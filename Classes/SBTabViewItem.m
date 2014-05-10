@@ -1515,7 +1515,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		if (returnCode == NSOKButton)
 		{
-			[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
+    // private, see  http://stackoverflow.com/questions/933331/how-to-use-nsurlconnection-to-connect-with-ssl-for-an-untrusted-cert for fix
+//			[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
 			[frame loadRequest:[NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:kSBTimeoutInterval]];
 			[self webView:self.webView didStartProvisionalLoadForFrame:frame];
 		}

@@ -293,12 +293,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	[doneButton setEnabled:YES];
 }
 
-- (void)webView:(WebView *)sender didFailLoadWithError:(NSError *)errorforFrame:(WebFrame *)frame
+- (void)webView:(WebView *)sender didFailLoadWithError:(NSError *)error forFrame:(WebFrame *)frame
 {
 	[indicator stopAnimation:nil];
 }
 
-- (void)webView:(WebView *)sender didFailProvisionalLoadWithError:(NSError *)errorforFrame:(WebFrame *)frame
+- (void)webView:(WebView *)sender didFailProvisionalLoadWithError:(NSError *)error forFrame:(WebFrame *)frame
 {
 	[indicator stopAnimation:nil];
 }

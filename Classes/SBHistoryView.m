@@ -337,7 +337,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	[messageLabel setBordered:NO];
 	[messageLabel setDrawsBackground:NO];
 	[messageLabel setTextColor:[NSColor whiteColor]];
-	[[messageLabel cell] setFont:[NSFont boldSystemFontOfSize:16]];
+	[(NSTextFieldCell*)[messageLabel cell] setFont:[NSFont boldSystemFontOfSize:16]];
 	[[messageLabel cell] setAlignment:NSLeftTextAlignment];
 	[[messageLabel cell] setWraps:YES];
 	[self addSubview:iconImageView];

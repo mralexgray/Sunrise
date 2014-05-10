@@ -133,7 +133,7 @@
 	[messageLabel setBordered:NO];
 	[messageLabel setDrawsBackground:NO];
 	[messageLabel setTextColor:[NSColor whiteColor]];
-	[[messageLabel cell] setFont:[NSFont boldSystemFontOfSize:16]];
+	[(NSTextFieldCell*)[messageLabel cell] setFont:[NSFont boldSystemFontOfSize:16]];
 	[[messageLabel cell] setAlignment:NSCenterTextAlignment];
 	[[messageLabel cell] setWraps:YES];
 	[textLabel setStringValue:@"JavaScript"];
@@ -150,7 +150,7 @@
 	[textLabel setBordered:NO];
 	[textLabel setDrawsBackground:NO];
 	[textLabel setTextColor:[NSColor whiteColor]];
-	[[textLabel cell] setFont:font];
+	[(NSTextFieldCell*)[textLabel cell] setFont:font];
 	[[textLabel cell] setAlignment:size.width > (r.size.width - 20.0) ? NSLeftTextAlignment : NSCenterTextAlignment];
 	[[textLabel cell] setWraps:YES];
 	[textLabel setStringValue:inText];

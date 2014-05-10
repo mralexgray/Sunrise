@@ -30,7 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 + (id)savePanel
 {
-	id panel = [super savePanel];
+	SBSavePanel * panel = (id)[super savePanel];
 	[panel setOpaque:NO];
 	[panel setBackgroundColor:[NSColor clearColor]];
 	[panel setShowsResizeIndicator:NO];
@@ -86,7 +86,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 + (id)openPanel
 {
-	id panel = [super openPanel];
+	SBOpenPanel* panel = (id)[super openPanel];
 	[panel setOpaque:NO];
 	[panel setBackgroundColor:[NSColor clearColor]];
 	[panel setShowsResizeIndicator:NO];

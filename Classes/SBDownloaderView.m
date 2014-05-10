@@ -152,7 +152,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	[messageLabel setBordered:NO];
 	[messageLabel setDrawsBackground:NO];
 	[messageLabel setTextColor:[NSColor whiteColor]];
-	[[messageLabel cell] setFont:[NSFont boldSystemFontOfSize:16]];
+	[(NSTextFieldCell*)[messageLabel cell] setFont:[NSFont boldSystemFontOfSize:16]];
 	[[messageLabel cell] setAlignment:NSCenterTextAlignment];
 	[[messageLabel cell] setWraps:YES];
 	[self addSubview:messageLabel];
@@ -167,7 +167,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	[urlLabel setBordered:NO];
 	[urlLabel setDrawsBackground:NO];
 	[urlLabel setTextColor:[NSColor lightGrayColor]];
-	[[urlLabel cell] setFont:[NSFont systemFontOfSize:12]];
+	[(NSTextFieldCell*)[urlLabel cell] setFont:[NSFont systemFontOfSize:12]];
 	[[urlLabel cell] setAlignment:NSRightTextAlignment];
 	[urlLabel setStringValue:[NSString stringWithFormat:@"%@ :", NSLocalizedString(@"URL", nil)]];
 	[self addSubview:urlLabel];

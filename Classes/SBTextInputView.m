@@ -136,7 +136,7 @@
 	[messageLabel setBordered:NO];
 	[messageLabel setDrawsBackground:NO];
 	[messageLabel setTextColor:[NSColor whiteColor]];
-	[[messageLabel cell] setFont:font];
+	[(NSTextFieldCell*)[messageLabel cell] setFont:font];
 	[[textLabel cell] setAlignment:size.width > (r.size.width - 20.0) ? NSLeftTextAlignment : NSCenterTextAlignment];
 	[[messageLabel cell] setWraps:YES];
 	[messageLabel setStringValue:inMessage];
